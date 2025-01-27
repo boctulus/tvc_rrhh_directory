@@ -12,3 +12,4 @@
 [2025-01-27 22:55:04]	No se encontró una version válida	Dashboard OK!
 [2025-01-27 23:00:59]	1.0.1	Automatic update
 [2025-01-27 23:09:15]	1.0.2	Correccion en datatable
+[2025-01-27 23:18:45]	1.0.3	Migracion
