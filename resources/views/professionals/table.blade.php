@@ -4,14 +4,13 @@
             <thead>
             <tr>
                 <th>Name</th>
-                <th>Position Id</th>
+                <th>Position</th>
                 <th>Contact</th>
                 <th>Email</th>
                 <th>Phone</th>
                 <th>Phone2</th>
-                <th>Img Url</th>
                 <th>Expertise</th>
-                <th>Location Id</th>
+                <th>State</th>
                 <th colspan="3">Action</th>
             </tr>
             </thead>
@@ -19,14 +18,33 @@
             @foreach($professionals as $professional)
                 <tr>
                     <td>{{ $professional->name }}</td>
-                    <td>{{ $professional->position_id }}</td>
+                    <td>{{ $professional->position->name }}</td>
                     <td>{{ $professional->contact }}</td>
                     <td>{{ $professional->email }}</td>
                     <td>{{ $professional->phone }}</td>
                     <td>{{ $professional->phone2 }}</td>
-                    <td>{{ $professional->img_url }}</td>
-                    <td>{{ $professional->expertise }}</td>
-                    <td>{{ $professional->location_id }}</td>
+                    <td>
+                        @switch($professional->expertise)
+                            @case(1)
+                                1 - Basic ★
+                                @break
+                            @case(2)
+                                2 - Intermediate ★★
+                                @break
+                            @case(3)
+                                3 - Proficient ★★★
+                                @break
+                            @case(4)
+                                4 - Advanced ★★★★
+                                @break
+                            @case(5)
+                                5 - Expert ★★★★★
+                                @break
+                            @default
+                                Not Specified
+                        @endswitch
+                    </td>
+                    <td>{{ $professional->location->name }}</td>
                     <td  style="width: 120px">
                         {!! Form::open(['route' => ['professionals.destroy', $professional->id], 'method' => 'delete']) !!}
                         <div class='btn-group'>
