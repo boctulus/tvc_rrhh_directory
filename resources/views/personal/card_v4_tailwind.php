@@ -209,21 +209,29 @@
                `;
         }
 
+        /*
+            TO-DO: 
+
+            - En el Dashboard deberia poder setearse el expertise_level
+            para cada "skill" (line_family)
+            - Aqui debera mostrarse una cantidad de stars (★) correspondiente
+        */
         createSkillsSection(skills) {
-            const skillItems = Object.entries(skills)
-                .map(([skill, level]) => `
-                       <li>${skill}: 
-                           <span class="text-yellow-500">${'★'.repeat(level)}</span> 
-                           (${level})
-                       </li>
-                   `).join('');
+            const skillItems = Object.values(skills)
+                .map(skillName => `
+                    <li>${skillName.replace(/^\d+:\s*/, '')}  
+                        <span class="text-yellow-500">★★★★★</span>
+                    </li>
+                `).join('');
 
             return `
-                   <div>
-                       <p class="mb-2"><strong>Habilidades:</strong></p>
-                       <ul>${skillItems}</ul>
-                   </div>
-               `;
+                <div>
+                    <p class="mb-2"><strong>Habilidades:</strong></p>
+                    <ul>
+                        ${skillItems}
+                    </ul>
+                </div>
+            `;
         }
 
         safeJSONParse(value, defaultValue) {

@@ -19,3 +19,4 @@
 [2025-01-28 13:58:03]	1.0.7	Automatic update
 [2025-01-28 14:42:50]	1.0.8	Automatic update
 [2025-01-28 15:08:31]	1.0.9	Automatic update
+[2025-01-28 15:22:31]	1.0.10	Card mejor
