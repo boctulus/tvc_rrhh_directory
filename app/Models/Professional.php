@@ -33,11 +33,12 @@ class Professional extends Model
         'name' => 'required|string|max:255',
         'position_id' => 'required',
         'contact' => 'required|string|max:255',
-        'email' => 'nullable|string|max:255',
+        'email' => 'nullable|string|max:255|email',
         'phone' => 'nullable|string|max:255',
         'phone2' => 'nullable|string|max:255',
-        'img_url' => 'nullable|string|max:255',
-        'expertise' => 'nullable',
+        'img_file' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048', // Explicit file validation
+        'img_url' => 'nullable|url|max:255',
+        'expertise' => 'nullable|integer|min:1|max:5',
         'location_id' => 'required',
         'created_at' => 'nullable',
         'updated_at' => 'nullable',
@@ -51,6 +52,17 @@ class Professional extends Model
         'states.*.state_id' => 'exists:states,id'
     ];
 
+    public function professionalAreas()
+    {
+        return $this->hasMany(ProfessionalArea::class);
+    }
+
+    public function areas()
+    {
+        return $this->belongsToMany(Area::class, 'professional_areas', 'professional_id', 'area_id')
+            ->withPivot('expertise_level');
+    }
+
     public function location(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(\App\Models\State::class, 'location_id');
@@ -59,12 +71,7 @@ class Professional extends Model
     public function position(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(\App\Models\Position::class, 'position_id');
-    }
-
-    public function professionalAreas(): \Illuminate\Database\Eloquent\Relations\HasMany
-    {
-        return $this->hasMany(\App\Models\ProfessionalArea::class, 'professional_id');
-    }
+    } 
 
     public function professionalBrands(): \Illuminate\Database\Eloquent\Relations\HasMany
     {

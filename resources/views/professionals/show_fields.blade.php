@@ -40,6 +40,28 @@
     <p>{{ $professional->img_url }}</p>
 </div>
 
+<div class="form-group col-sm-6">
+    {!! Form::label('areas', 'Areas:') !!}
+    {!! Form::select('areas[]', 
+        \App\Models\Area::pluck('name', 'id'), 
+        isset($professional) ? $professional->areas->pluck('id')->toArray() : [], 
+        [
+            'class' => 'form-control select2', 
+            'multiple' => 'multiple',
+            'placeholder' => 'Select Areas'
+        ]
+    ) !!}
+</div>
+
+<script>
+$(document).ready(function() {
+    $('.select2').select2({
+        placeholder: 'Select Areas',
+        allowClear: true
+    });
+});
+</script>
+
 <!-- Expertise Field -->
 <div class="col-sm-12">
     {!! Form::label('expertise', 'Expertise Level:') !!}

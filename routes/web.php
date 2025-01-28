@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\InstructorController;
+use App\Http\Controllers\PersonalController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,7 +20,7 @@ Route::get('/personal/example', function () {
     return view('personal.example-v4');
 });
 
-Route::get('/personal', [InstructorController::class, 'index'])->name('instructor.index');
+Route::get('/personal', [PersonalController::class, 'index'])->name('personal.index');
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

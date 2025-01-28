@@ -45,6 +45,23 @@ class ProfessionalController extends AppBaseController
     {
         $input = $request->all();
 
+        // Sync areas with expertise levels
+        if (isset($input['areas']) && is_array($input['areas'])) {
+            $areasToSync = [];
+            foreach ($input['areas'] as $areaId) {
+                $areasToSync[$areaId] = ['expertise_level' => 3]; // default expertise
+            }
+            $professional->areas()->sync($areasToSync);
+        }
+
+        // Handle image file upload
+        if ($request->hasFile('img_file')) {
+            $file = $request->file('img_file');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $path = $file->storeAs('professionals', $filename, 'public');
+            $input['img_url'] = '/storage/' . $path;
+        }
+
         // Create the professional
         $professional = $this->professionalRepository->create($input);
 
@@ -65,8 +82,6 @@ class ProfessionalController extends AppBaseController
                 }, $input['certifications'])
             );
         }
-
-        // Note: States are already handled by location_id in the main professional record
 
         Flash::success('Professional saved successfully.');
 
@@ -120,6 +135,23 @@ class ProfessionalController extends AppBaseController
 
         $input = $request->all();
 
+        // Handle image file upload
+        if ($request->hasFile('img_file')) {
+            $file = $request->file('img_file');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $path = $file->storeAs('professionals', $filename, 'public');
+            $input['img_url'] = '/storage/' . $path;
+        }
+
+        // Sync areas with expertise levels
+        if (isset($input['areas']) && is_array($input['areas'])) {
+            $areasToSync = [];
+            foreach ($input['areas'] as $areaId) {
+                $areasToSync[$areaId] = ['expertise_level' => 3]; // default expertise
+            }
+            $professional->areas()->sync($areasToSync);
+        }
+
         // Update the professional
         $professional = $this->professionalRepository->update($input, $id);
 
@@ -142,8 +174,6 @@ class ProfessionalController extends AppBaseController
                 }, $input['certifications'])
             );
         }
-
-        // Note: States are already handled by location_id in the main professional record
 
         Flash::success('Professional updated successfully.');
 

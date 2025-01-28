@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\ProfessionalApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,8 +35,10 @@ Route::resource('lines-families', App\Http\Controllers\API\LinesFamilyAPIControl
 Route::resource('positions', App\Http\Controllers\API\PositionAPIController::class)
     ->except(['create', 'edit']);
 
-Route::resource('professionals', App\Http\Controllers\API\ProfessionalAPIController::class)
-    ->except(['create', 'edit']);
+// Route::resource('professionals', App\Http\Controllers\API\ProfessionalAPIController::class)
+//     ->except(['create', 'edit']);
+
+Route::apiResource('professionals', ProfessionalApiController::class);
 
 Route::resource('professional-brands', App\Http\Controllers\API\ProfessionalBrandAPIController::class)
     ->except(['create', 'edit']);

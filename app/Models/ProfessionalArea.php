@@ -6,32 +6,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProfessionalArea extends Model
 {
-    public $table = 'professional_area';
+    protected $table = 'professional_areas';
 
-    public $fillable = [
-        'professional_id',
-        'area_id'
+    protected $fillable = [
+        'professional_id', 
+        'area_id', 
+        'expertise_level'
     ];
 
-    protected $casts = [
-        
-    ];
-
-    public static array $rules = [
-        'professional_id' => 'required',
-        'area_id' => 'required',
-        'created_at' => 'nullable',
-        'updated_at' => 'nullable',
-        'deleted_at' => 'nullable'
-    ];
-
-    public function area(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function professional()
     {
-        return $this->belongsTo(\App\Models\Area::class, 'area_id');
+        return $this->belongsTo(Professional::class);
     }
 
-    public function professional(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function area()
     {
-        return $this->belongsTo(\App\Models\Professional::class, 'professional_id');
+        return $this->belongsTo(Area::class);
     }
 }
