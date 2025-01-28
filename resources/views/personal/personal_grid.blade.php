@@ -93,17 +93,17 @@
                 </h2>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-8">
-                    @foreach ($personal as $instructor)
-                        @if(in_array($area, $instructor['areas']))
-                            <div class="engineer-card relative" data-brands="{{ strtolower($instructor['brands']) }}"
-                                data-instructor="{{ json_encode($instructor) }}">
+                    @foreach ($personal as $pro)
+                        @if(in_array($area, $pro['areas']))
+                            <div class="engineer-card relative" data-brands="{{ strtolower($pro['brands']) }}"
+                                data-instructor="{{ json_encode($pro) }}">
                                 {{-- Botón de vista en la esquina superior derecha --}}
-                                <button onclick="showModal({{ json_encode($instructor) }})"
+                                <button onclick="showModal({{ json_encode($pro) }})"
                                     class="absolute top-2 right-2 z-10 text-blue-500 hover:text-blue-700 bg-white rounded-full p-1 shadow-md">
                                     <i class="fas fa-eye"></i>
                                 </button>
 
-                                @include('personal.instructor-card', ['instructor' => $instructor])
+                                @include('personal.instructor-card', ['instructor' => $pro])
                             </div>
                         @endif
                     @endforeach

@@ -45,15 +45,6 @@ class ProfessionalController extends AppBaseController
     {
         $input = $request->all();
 
-        // Sync areas with expertise levels
-        if (isset($input['areas']) && is_array($input['areas'])) {
-            $areasToSync = [];
-            foreach ($input['areas'] as $areaId) {
-                $areasToSync[$areaId] = ['expertise_level' => 3]; // default expertise
-            }
-            $professional->areas()->sync($areasToSync);
-        }
-
         // Handle image file upload
         if ($request->hasFile('img_file')) {
             $file = $request->file('img_file');
@@ -64,6 +55,15 @@ class ProfessionalController extends AppBaseController
 
         // Create the professional
         $professional = $this->professionalRepository->create($input);
+
+        // Sync areas with expertise levels
+        if (isset($input['areas']) && is_array($input['areas'])) {
+            $areasToSync = [];
+            foreach ($input['areas'] as $areaId) {
+                $areasToSync[$areaId] = ['expertise_level' => 3]; // default expertise
+            }
+            $professional->areas()->sync($areasToSync);
+        }
 
         // Handle line families
         if (isset($input['line_families']) && is_array($input['line_families'])) {

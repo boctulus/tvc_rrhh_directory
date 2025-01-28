@@ -47,7 +47,7 @@
 
         <!-- Switch y contenido adicional -->
         <div class="relative max-w-4xl mx-auto">
-            <input type="checkbox" id="info-switch" class="hidden peer">
+            <input type="checkbox" id="info-switch" class="hidden peer" checked>
             <label for="info-switch" class="absolute -top-12 right-4 w-12 h-6 bg-gray-600 rounded-full peer-checked:bg-blue-500 cursor-pointer transition-all duration-300 
                    before:content-[''] before:absolute before:top-1 before:left-1 before:w-4 before:h-4 before:bg-white before:rounded-full 
                    before:transition-all before:duration-300 peer-checked:before:translate-x-6">
