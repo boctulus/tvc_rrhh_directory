@@ -15,3 +15,4 @@
 [2025-01-27 23:18:45]	1.0.3	Migracion
 [2025-01-28 11:49:04]	1.0.4	Ya se agregan Areas y se muestran las Cards nuevamente
 [2025-01-28 12:31:21]	1.0.5	Tabla Locations
+[2025-01-28 13:05:23]	1.0.6	Se ha reemplazado State por Location

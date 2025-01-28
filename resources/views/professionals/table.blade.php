@@ -44,7 +44,7 @@
                                 Not Specified
                         @endswitch
                     </td>
-                    <td>{{ $professional->location->name }}</td>
+                    <td>{{ optional($professional->location)->name ?? 'N/A' }}</td>
                     <td  style="width: 120px">
                         {!! Form::open(['route' => ['professionals.destroy', $professional->id], 'method' => 'delete']) !!}
                         <div class='btn-group'>

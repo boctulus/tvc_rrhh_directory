@@ -88,9 +88,9 @@ $(document).ready(function() {
     </p>
 </div>
 
-<!-- Location (State) Field -->
+<!-- Location Field -->
 <div class="col-sm-12">
-    {!! Form::label('location_id', 'State:') !!}
+    {!! Form::label('location_id', 'Location:') !!}
     <p>{{ $professional->location->name }}</p>
 </div>
 

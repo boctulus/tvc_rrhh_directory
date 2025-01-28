@@ -111,10 +111,10 @@
         ['class' => 'form-control select2', 'multiple' => 'multiple']) !!}
 </div>
 
-<!-- States Field -->
+<!-- Locations Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('location_id', 'State:') !!}
-    {!! Form::select('location_id', \App\Models\State::pluck('name', 'id'), null, ['class' => 'form-control', 'placeholder' => 'Select State', 'required']) !!}
+    {!! Form::label('location_id', 'Location:') !!}
+    {!! Form::select('location_id', \App\Models\Location::pluck('name', 'id'), null, ['class' => 'form-control', 'placeholder' => 'Select Location', 'required']) !!}
 </div>
 
 @push('page_scripts')

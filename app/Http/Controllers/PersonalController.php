@@ -40,7 +40,7 @@ class PersonalController extends Controller
                     ->implode(', '),
                 'lines_families' => $areaLevels, // Mantenemos el nombre por compatibilidad
                 'expertise' => $prof->expertise,
-                'location' => $prof->location->name,
+                'location' => $prof->location->name ?? 'N/A',
                 'contact' => $prof->contact,
                 'phone' => $prof->phone,
                 'img_url' => $prof->img_url,

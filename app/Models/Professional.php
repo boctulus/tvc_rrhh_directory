@@ -65,7 +65,7 @@ class Professional extends Model
 
     public function location(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(\App\Models\State::class, 'location_id');
+        return $this->belongsTo(\App\Models\Location::class, 'location_id');
     }
 
     public function position(): \Illuminate\Database\Eloquent\Relations\BelongsTo
