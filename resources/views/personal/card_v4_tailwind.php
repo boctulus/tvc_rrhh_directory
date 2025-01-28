@@ -131,7 +131,7 @@
             const profileRating = this.querySelector('.profile-rating');
             if (profileRating) {
                 const rating = this.getAttribute('rating');
-                profileRating.innerHTML = `<i class="fas fa-star text-yellow-400"></i> ${rating} Reseñas`;
+                profileRating.innerHTML = `<i class="fas fa-star text-yellow-400"></i> ${rating} Expertise`;
             }
 
             // Actualizar descripción

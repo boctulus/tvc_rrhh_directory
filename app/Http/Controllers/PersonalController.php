@@ -22,10 +22,9 @@ class PersonalController extends Controller
 
         // Transformar profesionales para mantener la estructura JSON
         $personal = $professionals->map(function($prof) {
-            // Transformar áreas con niveles de experiencia
-            $areaLevels = $prof->professionalAreas->mapWithKeys(function($pa) {
-                return [$pa->area->name => $pa->expertise_level ?? 3];
-            })->toArray();
+            // $areaLevels = $prof->professionalAreas->mapWithKeys(function($pa) {
+            //     return [$pa->area->name => $pa->expertise_level ?? 3];
+            // })->toArray();
 
             $lineFamilies = $prof->professionalLineFamilies->map(function($plf) {
                 return [

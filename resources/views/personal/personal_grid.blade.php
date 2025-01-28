@@ -202,6 +202,9 @@
             ? instructorData.brands.split(',')
             : instructorData.brands;
 
+        // Ensure lines_families are correctly displayed
+        const lineNames = instructorData.lines_families.map(lf => lf.name);
+
         // Crear el componente con los datos formateados
         const profileCard = `
             <profile-card
@@ -217,7 +220,7 @@
                 province="${instructorData.location}"
                 brands='${JSON.stringify(brands)}'
                 certifications='${JSON.stringify(parseCertifications(instructorData.certifications))}'
-                skills='${JSON.stringify(instructorData.lines_families)}'>
+                skills='${JSON.stringify(lineNames)}'>
             </profile-card>
         `;
 
