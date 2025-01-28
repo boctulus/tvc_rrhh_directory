@@ -16,8 +16,8 @@ class CertificationSeeder extends Seeder
     {
         DB::table('certifications')->insert([
             ['id' => 1, 'name' => 'Access Zkteco (Security inspection line series ZKD, ZKX5000, ZKX6500, ZKX10080) video surveillance DHCA-VIS DHSA DHCA-ACS Transmission + DoLink Care'],
-            ['id' => 2, 'name' => 'Certifications in DHCA-VIS DHSA DHCA-ACS'],
-            ['id' => 3, 'name' => 'Certifications in Transmission + DoLink Care DHSA DHCA-ACS']            
+            ['id' => 2, 'name' => 'DHCA-VIS DHSA DHCA-ACS'],
+            ['id' => 3, 'name' => 'Transmission + DoLink Care DHSA DHCA-ACS']            
         ]);
     }
 }
