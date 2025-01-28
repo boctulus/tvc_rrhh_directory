@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Brand;
+use App\Models\Professional;
 
 class ProfessionalBrand extends Model
 {
@@ -25,13 +27,13 @@ class ProfessionalBrand extends Model
         'deleted_at' => 'nullable'
     ];
 
-    public function brand(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function professional()
     {
-        return $this->belongsTo(\App\Models\Brand::class, 'brand_id');
+        return $this->belongsTo(Professional::class);
     }
 
-    public function professional(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function brand()
     {
-        return $this->belongsTo(\App\Models\Professional::class, 'professional_id');
+        return $this->belongsTo(Brand::class);
     }
 }

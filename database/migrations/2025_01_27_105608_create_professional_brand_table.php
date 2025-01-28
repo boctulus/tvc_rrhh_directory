@@ -17,6 +17,7 @@ class CreateProfessionalBrandTable extends Migration
             $table->id();
             $table->foreignId('professional_id')->constrained('professionals')->onDelete('cascade');
             $table->foreignId('brand_id')->constrained('brands')->onDelete('cascade');
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->softDeletes(); // Agrega el campo deleted_at
         });

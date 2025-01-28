@@ -76,12 +76,7 @@ class Professional extends Model
     public function professionalBrands(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(\App\Models\ProfessionalBrand::class, 'professional_id');
-    }
-
-    public function professionalBrand1s(): \Illuminate\Database\Eloquent\Relations\HasMany
-    {
-        return $this->hasMany(\App\Models\ProfessionalBrand::class, 'professional_id');
-    }
+    }    
 
     public function professionalCertifications(): \Illuminate\Database\Eloquent\Relations\HasMany
     {

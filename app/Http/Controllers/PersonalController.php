@@ -27,21 +27,34 @@ class PersonalController extends Controller
                 return [$pa->area->name => $pa->expertise_level ?? 3];
             })->toArray();
 
+            $lineFamilies = $prof->professionalLineFamilies->map(function($plf) {
+                return [
+                    'id' => $plf->line_family_id,
+                    'name' => $plf->lineFamily->name
+                ];
+            });
+
+            $lineFamily_names = $lineFamilies->pluck('name')->toArray();
+
+            $brands = array_unique(
+                array_map(function($name) {
+                    return substr($name, 0, strpos($name, '_'));
+                }, $lineFamily_names)
+            );
+
             return [
                 'id' => $prof->id,
                 'name' => $prof->name,
                 'position' => $prof->position->name,
-                'brands' => $prof->professionalAreas
-                    ->map(function($pa) { return $pa->area->name; })
-                    ->unique()
-                    ->implode(', '),
+                'brands' => $brands,
                 'certifications' => $prof->professionalCertifications
                     ->map(function($pc) { return $pc->certification->name; })
                     ->implode(', '),
-                'lines_families' => $areaLevels, // Mantenemos el nombre por compatibilidad
+                'lines_families' => $lineFamilies, 
                 'expertise' => $prof->expertise,
                 'location' => $prof->location->name ?? 'N/A',
                 'contact' => $prof->contact,
+                'email' => $prof->email,
                 'phone' => $prof->phone,
                 'img_url' => $prof->img_url,
                 'areas' => $prof->professionalAreas
@@ -50,6 +63,8 @@ class PersonalController extends Controller
                     ->toArray()
             ];
         })->toArray();
+
+        // dd($personal[0]['brands']);
 
         return view('personal.personal_grid', compact('areas', 'personal'));
     }

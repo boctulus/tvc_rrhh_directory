@@ -95,7 +95,7 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-8">
                     @foreach ($personal as $pro)
                         @if(in_array($area, $pro['areas']))
-                            <div class="engineer-card relative" data-brands="{{ strtolower($pro['brands']) }}"
+                            <div class="engineer-card relative"
                                 data-instructor="{{ json_encode($pro) }}">
                                 {{-- Botón de vista en la esquina superior derecha --}}
                                 <button onclick="showModal({{ json_encode($pro) }})"
@@ -195,6 +195,8 @@
     }
 
     function showModal(instructorData) {
+        console.log(instructorData); //
+        
         // Convertir las marcas a array si es string
         const brands = typeof instructorData.brands === 'string'
             ? instructorData.brands.split(',')
@@ -210,7 +212,7 @@
                 specialty="${instructorData.position}"
                 position="${instructorData.position}"
                 rating="${instructorData.expertise}.0"
-                email="${instructorData.contact}"
+                email="${instructorData.email}"
                 country="México"
                 province="${instructorData.location}"
                 brands='${JSON.stringify(brands)}'
