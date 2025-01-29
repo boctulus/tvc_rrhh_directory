@@ -29,7 +29,7 @@
                 <p class="profile-contact mt-2 text-sm text-gray-400"></p>
             </div>
 
-            <div class="absolute top-4 right-4 flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2">
+            <div class="absolute top-4 right-4 flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2 hidden">
                 <div class="w-8 h-8 bg-gray-500 rounded-full cursor-pointer hover:bg-gray-600 transition-colors flex items-center justify-center"
                     role="button">
                     <i class="fas fa-pencil-alt text-white"></i>
@@ -209,31 +209,34 @@
                `;
         }
 
-        /*
-            TO-DO: 
+        createSkillsSection(skills) {            
+            // Verificamos si tenemos la propiedad lines_families
+            const lineFamilies = skills.lines_families || [];
+        
+            
+            const skillItems = lineFamilies.map(skill => {
+                console.log(skill);
 
-            - En el Dashboard deberia poder setearse el expertise_level
-            para cada "skill" (line_family)
-            - Aqui debera mostrarse una cantidad de stars (★) correspondiente
-        */
-        createSkillsSection(skills) {
-            const skillItems = Object.values(skills)
-                .map(skillName => `
-                    <li>${skillName.replace(/^\d+:\s*/, '')}  
-                        <span class="text-yellow-500">★★★★★</span>
+                const stars = '★'.repeat(skill.expertise_level);
+                return `
+                    <li class="mb-1">
+                        ${skill.name}
+                        <span class="text-yellow-500">${stars}</span>
+                        <span class="text-gray-500">(${skill.expertise_level})</span>
                     </li>
-                `).join('');
+                `;
+            }).join('');
 
             return `
                 <div>
                     <p class="mb-2"><strong>Habilidades:</strong></p>
-                    <ul>
+                    <ul class="space-y-1">
                         ${skillItems}
                     </ul>
                 </div>
             `;
         }
-
+        
         safeJSONParse(value, defaultValue) {
             try {
                 return JSON.parse(value || JSON.stringify(defaultValue));

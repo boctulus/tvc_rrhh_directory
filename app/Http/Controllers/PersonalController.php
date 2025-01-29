@@ -29,7 +29,8 @@ class PersonalController extends Controller
             $lineFamilies = $prof->professionalLineFamilies->map(function($plf) {
                 return [
                     'id' => $plf->line_family_id,
-                    'name' => $plf->lineFamily->name
+                    'name' => $plf->lineFamily->name,
+                    'expertise_level' => $plf->expertise_level
                 ];
             });
 
@@ -37,9 +38,13 @@ class PersonalController extends Controller
 
             $brands = array_unique(
                 array_map(function($name) {
+                    if (strpos($name, '_') === false) {
+                        return $name;
+                    }
                     return substr($name, 0, strpos($name, '_'));
                 }, $lineFamily_names)
             );
+            
 
             return [
                 'id' => $prof->id,
@@ -63,7 +68,7 @@ class PersonalController extends Controller
             ];
         })->toArray();
 
-        // dd($personal[0]['brands']);
+        // dd($personal[0]['lines_families']); exit;
 
         return view('personal.personal_grid', compact('areas', 'personal'));
     }

@@ -4,6 +4,10 @@
 {{-- Incluir el archivo del Web Component --}}
 @include('personal.card_v4_tailwind')
 
+<script>
+    const avatar_default = "{{ asset('images/default-avatar.jpg') }}";
+</script>
+
 {{-- Container para el modal --}}
 <div id="modalContainer" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
     <div class="bg-white p-4 rounded-lg max-w-4xl w-full max-h-90vh overflow-y-auto">
@@ -137,57 +141,60 @@
     }
 
     function handleSearch() {
-        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-        const cards = document.querySelectorAll('.engineer-card');
-        const clearButton = document.getElementById('clearButton');
-        const selectedFields = Array.from(document.querySelectorAll('.search-field:checked')).map(cb => cb.value);
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const cards = document.querySelectorAll('.engineer-card');
+    const clearButton = document.getElementById('clearButton');
+    const selectedFields = Array.from(document.querySelectorAll('.search-field:checked')).map(cb => cb.value);
 
-        clearButton.style.display = searchTerm ? 'block' : 'none';
+    clearButton.style.display = searchTerm ? 'block' : 'none';
 
-        cards.forEach(card => {
-            const instructorData = JSON.parse(card.dataset.instructor || '{}');
-            let matches = false;
+    cards.forEach(card => {
+        const instructorData = JSON.parse(card.dataset.instructor || '{}');
+        let matches = false;
 
-            // Buscar en todos los campos seleccionados
-            for (const field of selectedFields) {
-                let fieldValue = '';
+        // Buscar en todos los campos seleccionados
+        for (const field of selectedFields) {
+            let fieldValue = '';
 
-                switch (field) {
-                    case 'brands':
-                        fieldValue = instructorData.brands || '';
-                        break;
-                    case 'name':
-                        fieldValue = instructorData.name || '';
-                        break;
-                    case 'position':
-                        fieldValue = instructorData.position || '';
-                        break;
-                    case 'location':
-                        fieldValue = instructorData.location || '';
-                        break;
-                    case 'certifications':
-                        fieldValue = instructorData.certifications || '';
-                        break;
-                    case 'expertise':
-                        fieldValue = instructorData.expertise?.toString() || '';
-                        break;
-                    case 'contact':
-                        fieldValue = instructorData.contact || '';
-                        break;
-                    case 'phone':
-                        fieldValue = instructorData.phone || '';
-                        break;
-                }
-
-                if (fieldValue.toLowerCase().includes(searchTerm)) {
-                    matches = true;
+            switch (field) {
+                case 'brands':
+                    // Convertir el array de brands a string para búsqueda
+                    fieldValue = Array.isArray(instructorData.brands) 
+                        ? instructorData.brands.join(' ').toLowerCase()
+                        : String(instructorData.brands || '').toLowerCase();
                     break;
-                }
+                case 'name':
+                    fieldValue = String(instructorData.name || '').toLowerCase();
+                    break;
+                case 'position':
+                    fieldValue = String(instructorData.position || '').toLowerCase();
+                    break;
+                case 'location':
+                    fieldValue = String(instructorData.location || '').toLowerCase();
+                    break;
+                case 'certifications':
+                    fieldValue = String(instructorData.certifications || '').toLowerCase();
+                    break;
+                case 'expertise':
+                    fieldValue = String(instructorData.expertise || '').toLowerCase();
+                    break;
+                case 'contact':
+                    fieldValue = String(instructorData.email || '').toLowerCase(); // Cambiado de contact a email
+                    break;
+                case 'phone':
+                    fieldValue = String(instructorData.phone || '').toLowerCase();
+                    break;
             }
 
-            card.style.display = matches || !searchTerm ? 'block' : 'none';
-        });
-    }
+            if (fieldValue.includes(searchTerm)) {
+                matches = true;
+                break;
+            }
+        }
+
+        card.style.display = matches || !searchTerm ? 'block' : 'none';
+    });
+}
 
     function clearSearch() {
         document.getElementById('searchInput').value = '';
@@ -205,10 +212,12 @@
         // Ensure lines_families are correctly displayed
         const lineNames = instructorData.lines_families.map(lf => lf.name);
 
+        const linesFamilies = instructorData.lines_families;
+
         // Crear el componente con los datos formateados
         const profileCard = `
             <profile-card
-                image-url="${instructorData.img_url}"
+                image-url="${instructorData.img_url || avatar_default}"
                 short-name="${instructorData.name.split(' ').slice(0, 2).join(' ')}"
                 full-name="${instructorData.name}"
                 phone="${instructorData.phone}"
@@ -220,7 +229,7 @@
                 province="${instructorData.location}"
                 brands='${JSON.stringify(brands)}'
                 certifications='${JSON.stringify(parseCertifications(instructorData.certifications))}'
-                skills='${JSON.stringify(lineNames)}'>
+                skills='${JSON.stringify({ lines_families: linesFamilies })}'>
             </profile-card>
         `;
 

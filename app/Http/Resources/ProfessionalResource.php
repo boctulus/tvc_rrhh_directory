@@ -40,7 +40,7 @@ class ProfessionalResource extends JsonResource
                     'name' => $pc->certification->name
                 ];
             })->toArray(),
-            'line_families' => $this->professionalLineFamilies->map(function($plf) {
+            'lines_families' => $this->professionalLineFamilies->map(function($plf) {
                 return [
                     'id' => $plf->line_family_id,
                     'name' => $plf->lineFamily->name

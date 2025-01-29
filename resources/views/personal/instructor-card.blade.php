@@ -8,18 +8,19 @@
     </a>
     
     <!-- Imagen -->       
-    <img src="{{ Str::startsWith($pro['img_url'], ['http://', 'https://']) 
-        ? $pro['img_url'] 
-        : asset('images/avatars/'. $pro['img_url']) }}" 
-        alt="Foto de perfil"
-        class="w-28 h-28 rounded-full object-cover" 
-        style="padding-top: 5px;">
+    <div class="w-24 h-24 mx-auto overflow-hidden rounded-full cursor-pointer" 
+        onclick="showModal({{ json_encode($instructor) }})">
+        <img src="{{ $instructor['img_url'] ?: 'javascript:void(0)' }}" 
+            onerror="this.src=avatar_default"
+            alt="{{ $instructor['name'] }}" 
+            class="w-full h-full object-cover">
+    </div>
 
     <!-- Contenido de texto -->
     <div class="flex-1 mt-4">
-        <h2 class="text-2xl font-bold text-gray-900">{{ $pro['name'] }}</h2>
-        <p class="text-sm text-blue-900 font-semibold">{{ $pro['position'] }}</p>
-        <p class="text-sm text-gray-400 mt-1">{{ count($pro['lines_families']) }} Lines/Products</p>
+        <h2 class="text-2xl font-bold text-gray-900">{{ $instructor['name'] }}</h2>
+        <p class="text-sm text-blue-900 font-semibold">{{ $instructor['position'] }}</p>
+        <p class="text-sm text-gray-400 mt-1">{{ count($instructor['lines_families']) }} Lines/Products</p>
         <span class="inline-block bg-yellow-500 text-white text-sm font-semibold px-2 py-1 rounded mt-2">
             ⭐ {{ $pro['expertise'] }} Expertise
         </span>

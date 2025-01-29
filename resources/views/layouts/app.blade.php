@@ -1,4 +1,11 @@
 <x-laravel-ui-adminlte::adminlte-layout>
+    <@if(app()->environment('production'))
+        <?php $manifest = json_decode(file_get_contents(public_path('build/manifest.json')), true); ?>
+        <link rel="stylesheet" href="{{ asset('build/'.$manifest['resources/sass/app.scss']['file']) }}">
+        <script type="module" src="{{ asset('build/'.$manifest['resources/js/app.js']['file']) }}"></script>
+    @else
+        @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    @endif>
 
     <body class="hold-transition sidebar-mini layout-fixed">
         <div class="wrapper">

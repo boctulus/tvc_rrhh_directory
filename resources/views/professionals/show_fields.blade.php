@@ -96,14 +96,35 @@ $(document).ready(function() {
 
 <!-- Line Families Field -->
 <div class="col-sm-12">
-    {!! Form::label('line_families', 'Line Families:') !!}
-    <p>
+    {!! Form::label('lines_families', 'Line Families:') !!}
+    <div>
         @if($professional->professionalLineFamilies->count() > 0)
-            {{ $professional->professionalLineFamilies->pluck('lineFamily.name')->implode(', ') }}
+            @foreach($professional->professionalLineFamilies as $plf)
+                <div class="mb-1">
+                    {{ $plf->lineFamily->name }} - 
+                    @switch($plf->expertise_level)
+                        @case(1)
+                            Basic ★
+                            @break
+                        @case(2)
+                            Intermediate ★★
+                            @break
+                        @case(3)
+                            Proficient ★★★
+                            @break
+                        @case(4)
+                            Advanced ★★★★
+                            @break
+                        @case(5)
+                            Expert ★★★★★
+                            @break
+                    @endswitch
+                </div>
+            @endforeach
         @else
             No Line Families
         @endif
-    </p>
+    </div>
 </div>
 
 <!-- Certifications Field -->

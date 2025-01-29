@@ -44,8 +44,9 @@ class Professional extends Model
         'updated_at' => 'nullable',
         'deleted_at' => 'nullable',
         // Add validation for related entities
-        'line_families' => 'nullable|array',
-        'line_families.*.line_family_id' => 'exists:line_families,id',
+        'lines_families' => 'nullable|array',
+        'lines_families.*.line_family_id' => 'exists:lines_families,id',
+        'lines_families.*.expertise_level' => 'integer|min:1|max:5',
         'certifications' => 'nullable|array',
         'certifications.*.certification_id' => 'exists:certifications,id',
         'states' => 'nullable|array',

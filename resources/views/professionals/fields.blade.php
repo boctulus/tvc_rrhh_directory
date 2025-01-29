@@ -95,12 +95,43 @@
 
 <!-- Line Families Field -->
 <div class="form-group col-sm-12">
-    {!! Form::label('line_families', 'Line Families:') !!}
-    {!! Form::select('line_families[]', 
-        \App\Models\LinesFamily::pluck('name', 'id'), 
-        isset($professional) ? $professional->professionalLineFamilies->pluck('line_family_id')->toArray() : null, 
-        ['class' => 'form-control select2', 'multiple' => 'multiple']) !!}
+    {!! Form::label('lines_families', 'Line Families:') !!}
+    <div id="line-families-container">
+        <!-- Los elementos dinámicos se agregarán aquí -->
+    </div>
+    <button type="button" class="btn btn-primary btn-sm mt-2" id="add-line-family">
+        <i class="fas fa-plus"></i> Add Line Family
+    </button>
 </div>
+
+<!-- Template para nuevas líneas (oculto) -->
+<template id="line-family-template">
+    <div class="line-family-row d-flex align-items-center mb-2">
+        <div class="col-sm-6 pl-0">
+            <select name="lines_families[@index][line_family_id]" class="form-control">
+                <option value="">Select Line Family</option>
+                @foreach(\App\Models\LinesFamily::pluck('name', 'id') as $id => $name)
+                    <option value="{{ $id }}">{{ $name }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-sm-4">
+            <select name="lines_families[@index][expertise_level]" class="form-control">
+                <option value="">Select Level</option>
+                <option value="1">1 - Basic ★</option>
+                <option value="2">2 - Intermediate ★★</option>
+                <option value="3">3 - Proficient ★★★</option>
+                <option value="4">4 - Advanced ★★★★</option>
+                <option value="5">5 - Expert ★★★★★</option>
+            </select>
+        </div>
+        <div class="col-sm-2">
+            <button type="button" class="btn btn-danger btn-sm remove-line-family">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+</template>
 
 <!-- Certifications Field -->
 <div class="form-group col-sm-12">
@@ -129,6 +160,52 @@
     $(".custom-file-input").on("change", function() {
         var fileName = $(this).val().split("\\").pop();
         $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+    });
+</script>
+@endpush
+
+@push('page_scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let lineFamilyIndex = 0;
+        const container = document.getElementById('line-families-container');
+        const template = document.getElementById('line-family-template');
+        const addButton = document.getElementById('add-line-family');
+
+        function addLineFamilyRow(lineFamily = null, expertiseLevel = null) {
+            const content = template.innerHTML.replace(/@index/g, lineFamilyIndex);
+            const div = document.createElement('div');
+            div.innerHTML = content;
+            const newRow = div.firstElementChild;
+            
+            if (lineFamily) {
+                newRow.querySelector('select[name$="[line_family_id]"]').value = lineFamily;
+                newRow.querySelector('select[name$="[expertise_level]"]').value = expertiseLevel;
+            }
+
+            container.appendChild(newRow);
+            lineFamilyIndex++;
+        }
+
+        addButton.addEventListener('click', () => addLineFamilyRow());
+
+        container.addEventListener('click', (e) => {
+            if (e.target.closest('.remove-line-family')) {
+                e.target.closest('.line-family-row').remove();
+            }
+        });
+
+        // Cargar datos existentes si estamos en modo edición
+        @if(isset($professional))
+            @foreach($professional->professionalLineFamilies as $plf)
+                addLineFamilyRow('{{ $plf->line_family_id }}', '{{ $plf->expertise_level }}');
+            @endforeach
+        @endif
+
+        // Si no hay líneas existentes, agregar una vacía
+        if (container.children.length === 0) {
+            addLineFamilyRow();
+        }
     });
 </script>
 @endpush
