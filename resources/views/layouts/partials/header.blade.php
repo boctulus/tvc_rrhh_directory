@@ -8,11 +8,15 @@
                     <i class="fas fa-bars text-xl"></i>
                 </button>
                 <!-- Menú desplegable -->
-                <div id="menu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 text-gray-700">
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-100">Inicio</a>
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-100">Cursos</a>
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-100">Contactar</a>
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-100">Login</a>
+                <div id="menu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 text-gray-700">                    
+                    <a href="{{ route('logout') }}" 
+                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();" 
+                    class="block px-4 py-2 hover:bg-gray-100">
+                        Sign out
+                    </a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                        @csrf
+                    </form>
                 </div>
             </div>
         </div>

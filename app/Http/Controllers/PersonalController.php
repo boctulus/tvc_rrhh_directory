@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 
 class PersonalController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     function index() {
         // Obtener todas las áreas únicas
         $areas = Area::pluck('name')->toArray();

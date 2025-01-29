@@ -29,19 +29,35 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Auth::routes();
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::resource('professionals', ProfessionalController::class);    
-    Route::resource('brands', App\Http\Controllers\BrandController::class);
-    Route::resource('areas', App\Http\Controllers\AreaController::class);
-    Route::resource('certifications', App\Http\Controllers\CertificationController::class);
-    Route::resource('lines-families', App\Http\Controllers\LinesFamilyController::class);
-    Route::resource('positions', App\Http\Controllers\PositionController::class);
-    Route::resource('professional-areas', App\Http\Controllers\ProfessionalAreaController::class);
-    Route::resource('professional-brands', App\Http\Controllers\ProfessionalBrandController::class);
-    Route::resource('professional-certifications', App\Http\Controllers\ProfessionalCertificationController::class);
-    Route::resource('professional-line-families', App\Http\Controllers\ProfessionalLineFamilyController::class);
-    Route::resource('professional-skills', App\Http\Controllers\ProfessionalSkillController::class);
-    Route::resource('states', App\Http\Controllers\StateController::class);
+    // Admin-only routes
+    Route::middleware(['role:admin'])->group(function () {
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::resource('professionals', ProfessionalController::class);    
+        Route::resource('brands', App\Http\Controllers\BrandController::class);
+        Route::resource('areas', App\Http\Controllers\AreaController::class);
+        Route::resource('certifications', App\Http\Controllers\CertificationController::class);
+        Route::resource('lines-families', App\Http\Controllers\LinesFamilyController::class);
+        Route::resource('positions', App\Http\Controllers\PositionController::class);
+        Route::resource('professional-areas', App\Http\Controllers\ProfessionalAreaController::class);
+        Route::resource('professional-brands', App\Http\Controllers\ProfessionalBrandController::class);
+        Route::resource('professional-certifications', App\Http\Controllers\ProfessionalCertificationController::class);
+        Route::resource('professional-line-families', App\Http\Controllers\ProfessionalLineFamilyController::class);
+        Route::resource('professional-skills', App\Http\Controllers\ProfessionalSkillController::class);
+        Route::resource('states', App\Http\Controllers\StateController::class);
+    });
+
+    // Personal routes for admin and agent
+    Route::middleware(['role:admin,agent'])->group(function () {
+        Route::get('/personal', [PersonalController::class, 'index']);
+    });
+
+    Route::get('/admin', [App\Http\Controllers\DashboardController::class, 'index'])
+        ->middleware('role:admin')
+        ->name('admin');
+
+    Route::get('/personal', [App\Http\Controllers\PersonalController::class, 'index'])
+        ->middleware('role:agent')
+        ->name('personal');
 });
 
 /*
@@ -121,4 +137,5 @@ Route::prefix('admin/tasks')->group(function () {
     });
 });
 
+Route::redirect('/dashboard', '/professionals');
 Route::redirect('/admin', '/professionals');

@@ -31,6 +31,9 @@ if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php'))
 |
 */
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 require __DIR__.'/../vendor/autoload.php';
 
 /*
@@ -43,6 +46,9 @@ require __DIR__.'/../vendor/autoload.php';
 | to this client's browser, allowing them to enjoy our application.
 |
 */
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 $app = require_once __DIR__.'/../bootstrap/app.php';
 
