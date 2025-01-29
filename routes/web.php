@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PersonalController;
+use App\Http\Controllers\ProfessionalController;
+use App\Http\Controllers\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,18 +28,21 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Auth::routes();
 
-Route::resource('brands', App\Http\Controllers\BrandController::class);
-Route::resource('areas', App\Http\Controllers\AreaController::class);
-Route::resource('certifications', App\Http\Controllers\CertificationController::class);
-Route::resource('lines-families', App\Http\Controllers\LinesFamilyController::class);
-Route::resource('positions', App\Http\Controllers\PositionController::class);
-Route::resource('professionals', App\Http\Controllers\ProfessionalController::class);
-Route::resource('professional-areas', App\Http\Controllers\ProfessionalAreaController::class);
-Route::resource('professional-brands', App\Http\Controllers\ProfessionalBrandController::class);
-Route::resource('professional-certifications', App\Http\Controllers\ProfessionalCertificationController::class);
-Route::resource('professional-line-families', App\Http\Controllers\ProfessionalLineFamilyController::class);
-Route::resource('professional-skills', App\Http\Controllers\ProfessionalSkillController::class);
-Route::resource('states', App\Http\Controllers\StateController::class);
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::resource('professionals', ProfessionalController::class);    
+    Route::resource('brands', App\Http\Controllers\BrandController::class);
+    Route::resource('areas', App\Http\Controllers\AreaController::class);
+    Route::resource('certifications', App\Http\Controllers\CertificationController::class);
+    Route::resource('lines-families', App\Http\Controllers\LinesFamilyController::class);
+    Route::resource('positions', App\Http\Controllers\PositionController::class);
+    Route::resource('professional-areas', App\Http\Controllers\ProfessionalAreaController::class);
+    Route::resource('professional-brands', App\Http\Controllers\ProfessionalBrandController::class);
+    Route::resource('professional-certifications', App\Http\Controllers\ProfessionalCertificationController::class);
+    Route::resource('professional-line-families', App\Http\Controllers\ProfessionalLineFamilyController::class);
+    Route::resource('professional-skills', App\Http\Controllers\ProfessionalSkillController::class);
+    Route::resource('states', App\Http\Controllers\StateController::class);
+});
 
 /*
     Rutas Admin 
