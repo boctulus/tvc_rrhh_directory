@@ -15,8 +15,15 @@ class CreateProfessionalSkillsTable extends Migration
     {
         Schema::create('professional_skill', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('professional_id')->constrained('professionals')->onDelete('cascade');
-            $table->foreignId('skill_id')->constrained('skills')->onDelete('cascade');
+
+            $table->foreignId('professional_id')
+            ->constrained('professionals')
+            ->onDelete('cascade');
+
+            $table->foreignId('skill_id')
+            ->constrained('skills')
+            ->onDelete('restrict');
+
             $table->integer('expertise_level')->nullable(); // Nivel de experiencia en la habilidad
             $table->timestamps();
         });

@@ -15,8 +15,15 @@ class CreateProfessionalCertificationTable extends Migration
     {
         Schema::create('professional_certification', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('professional_id')->constrained('professionals')->onDelete('cascade');
-            $table->foreignId('certification_id')->constrained('certifications')->onDelete('cascade');
+            
+            $table->foreignId('professional_id')
+            ->constrained('professionals')
+            ->onDelete('cascade');
+            
+            $table->foreignId('certification_id')
+            ->constrained('certifications')
+            ->onDelete('restrict');
+            
             $table->timestamps();
             $table->softDeletes(); // Agrega el campo deleted_at
         });

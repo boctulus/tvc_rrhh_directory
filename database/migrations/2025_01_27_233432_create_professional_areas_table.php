@@ -28,7 +28,7 @@ class CreateProfessionalAreasTable extends Migration
             $table->foreign('area_id')
                   ->references('id')
                   ->on('areas')
-                  ->onDelete('cascade');
+                  ->onDelete('restrict'); // seguro
 
             // Unique constraint to prevent duplicate entries
             $table->unique(['professional_id', 'area_id']);

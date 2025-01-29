@@ -27,3 +27,4 @@
 [2025-01-29 13:37:56]	1.0.15	Automatic update
 [2025-01-29 13:38:09]	1.0.16	Automatic update
 [2025-01-29 18:22:52]	1.0.17	Automatic update
+[2025-01-29 19:28:11]	1.0.18	Revisados DELETE ON CASCADE
