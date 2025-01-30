@@ -1,0 +1,12 @@
+DOC DIRECTORIO TVC
+==================
+
+# Usuarios predeterminados
+
+user: admin@tvc.com
+role: admin
+pass: TVC#adm_2025!
+            
+user: agent@tvc.com
+role: agent
+pass: TVC_#Agent_2025!
