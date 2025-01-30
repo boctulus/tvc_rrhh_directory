@@ -89,3 +89,11 @@
         <p>States</p>
     </a>
 </li>
+
+<li class="nav-header">NAVEGACIÓN</li>
+<li class="nav-item">
+    <a href="{{ route('personal.index') }}" class="nav-link {{ Request::is('personal*') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-th-large"></i>
+        <p>Ir al Grid</p>
+    </a>
+</li>

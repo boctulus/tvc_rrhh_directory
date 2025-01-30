@@ -21,7 +21,7 @@ class CreateProfessionalsTable extends Migration
             ->constrained('positions')
             ->onDelete('restrict');
             
-            $table->string('contact')->unique();
+            $table->string('contact')->nullable();
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
             $table->string('phone2')->nullable();

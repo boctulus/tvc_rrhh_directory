@@ -78,11 +78,13 @@ class ProfessionalController extends AppBaseController
         $input = $request->all();
 
         // Handle image file upload
-        if ($request->hasFile('img_file')) {
-            $file = $request->file('img_file');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $path = $file->storeAs('professionals', $filename, 'public');
-            $input['img_url'] = '/storage/' . $path;
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('professionals', 'public');
+            $input['avatar_storage'] = $path;
+            $input['img_url'] = null;
+        } elseif ($request->filled('img_url')) {
+            $input['img_url'] = $request->img_url;
+            $input['avatar_storage'] = null;
         }
 
         // Create the professional
@@ -138,12 +140,21 @@ class ProfessionalController extends AppBaseController
 
         $input = $request->all();
 
-        // Handle image file upload
-        if ($request->hasFile('img_file')) {
-            $file = $request->file('img_file');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $path = $file->storeAs('professionals', $filename, 'public');
-            $input['img_url'] = '/storage/' . $path;
+        /* 
+            Handle image file upload 
+        */
+
+        // Si hay un archivo subido
+        if ($request->hasFile('image')) {
+            // Guardar el archivo y obtener la ruta
+            $path = $request->file('image')->store('professionals', 'public');
+            $data['avatar_storage'] = $path;
+            $data['img_url'] = null; // Limpiar la URL externa si existe
+        } 
+        // Si hay una URL externa
+        else if ($request->filled('img_url')) {
+            $data['img_url'] = $request->img_url;
+            $data['avatar_storage'] = null; // Limpiar el storage si existe
         }
 
         // Sync areas with expertise levels

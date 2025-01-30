@@ -30,3 +30,4 @@
 [2025-01-29 19:28:11]	1.0.18	Revisados DELETE ON CASCADE
 [2025-01-30 11:10:53]	1.0.19	Solucionado problema de rutas
 [2025-01-30 11:44:04]	1.0.20	SOLUCIONADO: duplicando las habilidades (line_families) cuando son agregadas a un professional
+[2025-01-30 15:55:45]	1.0.21	Automatic update

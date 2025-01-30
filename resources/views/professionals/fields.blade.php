@@ -58,24 +58,48 @@
             <div class="row">
                 <!-- File Upload Field -->
                 <div class="form-group col-sm-6">
-                    {!! Form::label('img_file', 'Upload Image:') !!}
-                    {!! Form::file('img_file', ['class' => 'form-control-file', 'accept' => 'image/*']) !!}
+                    {!! Form::label('avatar_storage', 'Upload Image:') !!}
+                    {!! Form::file('avatar_storage', [
+                        'class' => 'form-control-file',
+                        'accept' => 'image/*',
+                        'id' => 'imageUpload'
+                    ]) !!}
                 </div>
 
                 <!-- Image URL Field -->
                 <div class="form-group col-sm-6">
                     {!! Form::label('img_url', 'Or Enter Image URL:') !!}
-                    {!! Form::text('img_url', null, ['class' => 'form-control', 'placeholder' => 'https://example.com/image.jpg']) !!}
+                    {!! Form::text('img_url', null, [
+                        'class' => 'form-control',
+                        'id' => 'imageUrl',
+                        'placeholder' => 'https://example.com/image.jpg'
+                    ]) !!}
                 </div>
             </div>
             
-            <!-- Preview Image (if exists) -->
-            @if(isset($professional) && $professional->img_url)
-            <div class="row mt-3">
-                <div class="col-sm-12">
-                    <img src="{{ $professional->img_url }}" alt="Professional Image" class="img-fluid" style="max-height: 200px;">
-                </div>
-            </div>
+            <!-- Preview Current Image -->
+            @if(isset($professional))
+                @if($professional->avatar_storage)
+                    <div class="row mt-3">
+                        <div class="col-sm-12">
+                            <label>Current Image:</label><br>
+                            <img src="{{ Storage::url($professional->avatar_storage) }}" 
+                                 alt="Professional Image" 
+                                 class="img-fluid" 
+                                 style="max-height: 200px;">
+                        </div>
+                    </div>
+                @elseif($professional->img_url)
+                    <div class="row mt-3">
+                        <div class="col-sm-12">
+                            <label>Current Image:</label><br>
+                            <img src="{{ $professional->img_url }}" 
+                                 alt="Professional Image" 
+                                 class="img-fluid" 
+                                 style="max-height: 200px;">
+                        </div>
+                    </div>
+                @endif
             @endif
         </div>
     </div>
@@ -205,6 +229,46 @@
         // Si no hay líneas existentes, agregar una vacía
         if (container.children.length === 0) {
             addLineFamilyRow();
+        }
+    });
+</script>
+@endpush
+
+@push('page_scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const imageUpload = document.getElementById('imageUpload');
+        const imageUrl = document.getElementById('imageUrl');
+
+        function toggleFields(uploadEnabled) {
+            if (uploadEnabled) {
+                imageUrl.value = '';
+                imageUrl.disabled = true;
+            } else {
+                imageUrl.disabled = false;
+            }
+        }
+
+        function toggleUpload(urlEnabled) {
+            if (urlEnabled) {
+                imageUpload.value = '';
+                imageUpload.disabled = true;
+            } else {
+                imageUpload.disabled = false;
+            }
+        }
+
+        imageUpload.addEventListener('change', function() {
+            toggleFields(this.files.length > 0);
+        });
+
+        imageUrl.addEventListener('input', function() {
+            toggleUpload(this.value.trim() !== '');
+        });
+
+        // Check initial state
+        if (imageUrl.value.trim() !== '') {
+            toggleUpload(true);
         }
     });
 </script>

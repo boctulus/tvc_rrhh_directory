@@ -16,6 +16,7 @@ class Professional extends Model
         'phone',
         'phone2',
         'img_url',
+        'avatar_storage',
         'expertise',
         'location_id'
     ];
@@ -32,7 +33,7 @@ class Professional extends Model
     public static array $rules = [
         'name' => 'required|string|max:255',
         'position_id' => 'required',
-        'contact' => 'required|string|max:255',
+        'contact' => 'string|max:255',
         'email' => 'nullable|string|max:255|email',
         'phone' => 'nullable|string|max:255',
         'phone2' => 'nullable|string|max:255',

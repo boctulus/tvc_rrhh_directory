@@ -32,7 +32,7 @@ class UpdateProfessionalRequest extends FormRequest
             $rules['img_file'] = [
                 'file',
                 'image',
-                Rule::in(['jpeg', 'png', 'jpg', 'gif']),
+                'mimes:jpeg,png,jpg,gif',
                 'max:2048'
             ];
         }
@@ -49,8 +49,7 @@ class UpdateProfessionalRequest extends FormRequest
     {
         return [
             'img_file.image' => 'The uploaded file must be an image.',
-            'img_file.in' => 'The image must be a file of type: jpeg, png, jpg, gif.',
-            'img_file.max' => 'The image may not be greater than 2048 kilobytes.'
+            'img_file.mimes' => 'The image must be a file of type: jpeg, png, jpg, gif.',
         ];
     }
 }

@@ -55,10 +55,10 @@
                         </div>
                     </form>
 
-                    <p class="mb-1">
+                    <p class="mb-1" style="display:none">
                         <a href="{{ route('password.request') }}">I forgot my password</a>
                     </p>
-                    <p class="mb-0">
+                    <p class="mb-0" style="display:none">
                         <a href="{{ route('register') }}" class="text-center">Register a new membership</a>
                     </p>
                 </div>
