@@ -5,6 +5,17 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PersonalController;
 use App\Http\Controllers\ProfessionalController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\BrandController;
+use App\Http\Controllers\AreaController;
+use App\Http\Controllers\CertificationController;
+use App\Http\Controllers\LinesFamilyController;
+use App\Http\Controllers\PositionController;
+use App\Http\Controllers\ProfessionalAreaController;
+use App\Http\Controllers\ProfessionalBrandController;
+use App\Http\Controllers\ProfessionalCertificationController;
+use App\Http\Controllers\ProfessionalLineFamilyController;
+use App\Http\Controllers\ProfessionalSkillController;
+use App\Http\Controllers\StateController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,10 +32,8 @@ Route::get('/personal/example', function () {
     return view('personal.example-v4');
 });
 
-Route::get('/personal', [PersonalController::class, 'index'])->name('personal.index');
-
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Auth::routes();
 
@@ -33,109 +42,95 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:admin'])->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::resource('professionals', ProfessionalController::class);    
-        Route::resource('brands', App\Http\Controllers\BrandController::class);
-        Route::resource('areas', App\Http\Controllers\AreaController::class);
-        Route::resource('certifications', App\Http\Controllers\CertificationController::class);
-        Route::resource('lines-families', App\Http\Controllers\LinesFamilyController::class);
-        Route::resource('positions', App\Http\Controllers\PositionController::class);
-        Route::resource('professional-areas', App\Http\Controllers\ProfessionalAreaController::class);
-        Route::resource('professional-brands', App\Http\Controllers\ProfessionalBrandController::class);
-        Route::resource('professional-certifications', App\Http\Controllers\ProfessionalCertificationController::class);
-        Route::resource('professional-line-families', App\Http\Controllers\ProfessionalLineFamilyController::class);
-        Route::resource('professional-skills', App\Http\Controllers\ProfessionalSkillController::class);
-        Route::resource('states', App\Http\Controllers\StateController::class);
+        Route::resource('brands', BrandController::class);
+        Route::resource('areas', AreaController::class);
+        Route::resource('certifications', CertificationController::class);
+        Route::resource('lines-families', LinesFamilyController::class);
+        Route::resource('positions', PositionController::class);
+        Route::resource('professional-areas', ProfessionalAreaController::class);
+        Route::resource('professional-brands', ProfessionalBrandController::class);
+        Route::resource('professional-certifications', ProfessionalCertificationController::class);
+        Route::resource('professional-line-families', ProfessionalLineFamilyController::class);
+        Route::resource('professional-skills', ProfessionalSkillController::class);
+        Route::resource('states', StateController::class);
     });
 
-    // Personal routes for admin and agent
-    Route::middleware(['role:admin,agent'])->group(function () {
-        Route::get('/personal', [PersonalController::class, 'index']);
-    });
+    // Personal route accessible by both admin and agent
+    Route::get('/personal', [PersonalController::class, 'index'])
+        ->middleware('role:admin,agent')
+        ->name('personal.index');
 
-    Route::get('/admin', [App\Http\Controllers\DashboardController::class, 'index'])
+    // Admin dashboard route
+    Route::get('/admin', [DashboardController::class, 'index'])
         ->middleware('role:admin')
         ->name('admin');
-
-    Route::get('/personal', [App\Http\Controllers\PersonalController::class, 'index'])
-        ->middleware('role:agent')
-        ->name('personal');
 });
 
-/*
-    Rutas Admin 
-    
-    Ejecutar migraciones en /admin/tasks/db/migrate
-    Ejecutar seeders en /admin/tasks/db/seed
-    Ejecutar rollback en /admin/tasks/db/rollback
-    etc.
-  
-    TODO: deben ser protegidas
+// Admin tasks routes (protected by auth and admin role)
+Route::prefix('admin/tasks/db')
+    ->middleware(['auth', 'role:admin'])
+    ->group(function () {
+        Route::get('/migrate', function () {
+            try {
+                Artisan::call('migrate');
+                return "Migraciones ejecutadas exitosamente";
+            } catch (\Exception $e) {
+                return "Error al ejecutar migraciones: " . $e->getMessage();
+            }
+        });
 
-    Route::prefix('admin/tasks/db')->middleware(['auth', 'admin'])->group(function () {
-        // ... rutas anteriores
-    });
-*/
+        Route::get('/seed', function () {
+            try {
+                $output = new \Symfony\Component\Console\Output\BufferedOutput;
+                Artisan::call('db:seed', [], $output);
+                return nl2br($output->fetch());
+            } catch (\Exception $e) {
+                return nl2br($output->fetch() . "\n" . $e->getMessage() . "\n" . $e->getTraceAsString());
+            }
+        });
 
-Route::prefix('admin/tasks/db')->group(function () {
-    Route::get('/migrate', function () {
-        try {
-            Artisan::call('migrate');
-            return "Migraciones ejecutadas exitosamente";
-        } catch (\Exception $e) {
-            return "Error al ejecutar migraciones: " . $e->getMessage();
-        }
+        Route::get('/rollback', function () {
+            try {
+                Artisan::call('migrate:rollback');
+                return "Rollback ejecutado exitosamente";
+            } catch (\Exception $e) {
+                return "Error al ejecutar rollback: " . $e->getMessage();
+            }
+        });
+
+        Route::get('/reset', function () {
+            try {
+                Artisan::call('migrate:reset');
+                return "Reset ejecutado exitosamente";
+            } catch (\Exception $e) {
+                return "Error al ejecutar reset: " . $e->getMessage();
+            }
+        });
+
+        Route::get('/fresh', function () {
+            try {
+                Artisan::call('migrate:fresh');
+                return "Fresh ejecutado exitosamente";
+            } catch (\Exception $e) {
+                return "Error al ejecutar fresh: " . $e->getMessage();
+            }
+        });    
     });
 
-    Route::get('/seed', function () {
-        try {
-            $output = new \Symfony\Component\Console\Output\BufferedOutput;
-            Artisan::call('db:seed', [], $output);
-            return nl2br($output->fetch());
-        } catch (\Exception $e) {
-            return nl2br($output->fetch() . "\n" . $e->getMessage() . "\n" . $e->getTraceAsString());
-        }
+Route::prefix('admin/tasks')
+    ->middleware(['auth', 'role:admin'])
+    ->group(function () {
+        Route::get('/cache/clear', function () {
+            try {
+                Artisan::call('config:clear');
+                Artisan::call('view:clear');
+                Artisan::call('cache:clear');
+                return "Caché limpiada exitosamente";
+            } catch (\Exception $e) {
+                return "Error al limpiar la caché: " . $e->getMessage();
+            }
+        });
     });
-
-    Route::get('/rollback', function () {
-        try {
-            Artisan::call('migrate:rollback');
-            return "Rollback ejecutado exitosamente";
-        } catch (\Exception $e) {
-            return "Error al ejecutar rollback: " . $e->getMessage();
-        }
-    });
-
-    Route::get('/reset', function () {
-        try {
-            Artisan::call('migrate:reset');
-            return "Reset ejecutado exitosamente";
-        } catch (\Exception $e) {
-            return "Error al ejecutar reset: " . $e->getMessage();
-        }
-    });
- 
-    Route::get('/fresh', function () {
-        try {
-            Artisan::call('migrate:fresh');
-            return "Fresh ejecutado exitosamente";
-        } catch (\Exception $e) {
-            return "Error al ejecutar fresh: " . $e->getMessage();
-        }
-    });    
-});
-
-Route::prefix('admin/tasks')->group(function () {
-     // Ruta para limpiar la caché
-     Route::get('/cache/clear', function () {
-        try {
-            Artisan::call('config:clear');
-            Artisan::call('view:clear');
-            Artisan::call('cache:clear');
-            return "Caché limpiada exitosamente";
-        } catch (\Exception $e) {
-            return "Error al limpiar la caché: " . $e->getMessage();
-        }
-    });
-});
 
 Route::redirect('/dashboard', '/professionals');
 Route::redirect('/admin', '/professionals');

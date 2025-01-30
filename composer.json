@@ -4,7 +4,7 @@
     "description": "Directorio de ingenieria",
     "keywords": ["tvc", "directorio", "rrhh"],
     "license": "Commercial",
-    "version": "1.0.18",
+    "version": "1.0.19",
     "require": {
         "php": "^8.1",
         "doctrine/dbal": "3.7",
