@@ -12,6 +12,15 @@ role: agent
 pass: TVC_#Agent_2025!
 
 
+# API
+
+Hay una API Rest basica con endpoints como:
+
+api/professionals
+api/areas
+etc.
+
+
 Notas:
 
 - Ejecutar

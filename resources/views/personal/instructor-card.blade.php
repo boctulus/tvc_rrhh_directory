@@ -10,7 +10,7 @@
     <!-- Imagen -->       
     <div class="w-24 h-24 mx-auto overflow-hidden rounded-full cursor-pointer" 
         onclick="showModal({{ json_encode($instructor) }})">
-        <img src="{{ $instructor['img_url'] ?: 'javascript:void(0)' }}" 
+        <img src="{{ $instructor['img_url'] ?: ($instructor['avatar_storage'] ? Storage::url($instructor['avatar_storage']) : 'javascript:void(0)') }}" 
             onerror="this.src=avatar_default"
             alt="{{ $instructor['name'] }}" 
             class="w-full h-full object-cover">

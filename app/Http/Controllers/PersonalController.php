@@ -66,6 +66,7 @@ class PersonalController extends Controller
                 'email' => $prof->email,
                 'phone' => $prof->phone,
                 'img_url' => $prof->img_url,
+                'avatar_storage' => $prof->avatar_storage,
                 'areas' => $prof->professionalAreas
                     ->map(function($pa) { return $pa->area->name; })
                     ->unique()

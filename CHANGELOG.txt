@@ -32,3 +32,4 @@
 [2025-01-30 11:44:04]	1.0.20	SOLUCIONADO: duplicando las habilidades (line_families) cuando son agregadas a un professional
 [2025-01-30 15:55:45]	1.0.21	Automatic update
 [2025-01-30 16:11:22]	1.0.22	Automatic update
+[2025-01-30 16:32:03]	1.0.23	Version stable
