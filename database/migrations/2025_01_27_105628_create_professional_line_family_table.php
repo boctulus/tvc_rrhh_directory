@@ -28,6 +28,10 @@ class CreateProfessionalLineFamilyTable extends Migration
             $table->timestamps();
             $table->softDeletes(); // Agrega el campo deleted_at
         });
+
+        Schema::table('professional_line_family', function (Blueprint $table) {
+            $table->unique(['professional_id', 'line_family_id']);
+        });
     }
 
     /**

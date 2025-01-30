@@ -71,27 +71,6 @@ class ProfessionalController extends AppBaseController
     }
 
     /**
-     * Store/Update Professional
-     */
-    private function handleProfessionalLineFamilies($professional, $request)
-    {
-        // Eliminar relaciones existentes
-        $professional->professionalLineFamilies()->delete();
-
-        // Agregar nuevas relaciones
-        if ($request->has('lines_families')) {
-            foreach ($request->lines_families as $lineFamily) {
-                if (!empty($lineFamily['line_family_id']) && !empty($lineFamily['expertise_level'])) {
-                    $professional->professionalLineFamilies()->create([
-                        'line_family_id' => $lineFamily['line_family_id'],
-                        'expertise_level' => $lineFamily['expertise_level']
-                    ]);
-                }
-            }
-        }
-    }
-
-    /**
      * Store a newly created Professional in storage.
      */
     public function store(CreateProfessionalRequest $request)
@@ -108,8 +87,7 @@ class ProfessionalController extends AppBaseController
 
         // Create the professional
         $professional = $this->professionalRepository->create($input);
-        $this->handleProfessionalLineFamilies($professional, $request);
-
+        
         // Sync areas with expertise levels
         if (isset($input['areas']) && is_array($input['areas'])) {
             $areasToSync = [];
@@ -179,7 +157,6 @@ class ProfessionalController extends AppBaseController
 
         // Update the professional
         $professional = $this->professionalRepository->update($input, $id);
-        $this->handleProfessionalLineFamilies($professional, $request);
 
         // Handle line families
         $professional->professionalLineFamilies()->delete();
