@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateProfessionalRequest;
 use App\Http\Controllers\AppBaseController;
 use App\Repositories\ProfessionalRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Flash;
 
 class ProfessionalController extends AppBaseController
@@ -77,9 +78,9 @@ class ProfessionalController extends AppBaseController
     {
         $input = $request->all();
 
-        // Handle image file upload
-        if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('professionals', 'public');
+        // Manejar subida de imagen
+        if ($request->hasFile('avatar_storage')) { // Cambiar de 'image' a 'avatar_storage'
+            $path = $request->file('avatar_storage')->store('professionals', 'public');
             $input['avatar_storage'] = $path;
             $input['img_url'] = null;
         } elseif ($request->filled('img_url')) {
@@ -144,17 +145,23 @@ class ProfessionalController extends AppBaseController
             Handle image file upload 
         */
 
-        // Si hay un archivo subido
-        if ($request->hasFile('image')) {
-            // Guardar el archivo y obtener la ruta
-            $path = $request->file('image')->store('professionals', 'public');
-            $data['avatar_storage'] = $path;
-            $data['img_url'] = null; // Limpiar la URL externa si existe
-        } 
-        // Si hay una URL externa
-        else if ($request->filled('img_url')) {
-            $data['img_url'] = $request->img_url;
-            $data['avatar_storage'] = null; // Limpiar el storage si existe
+        // Manejar subida de imagen
+        if ($request->hasFile('avatar_storage')) { // Cambiar de 'image' a 'avatar_storage'
+            // Eliminar imagen anterior si existe
+            if ($professional->avatar_storage) {
+                Storage::disk('public')->delete($professional->avatar_storage);
+            }
+            
+            $path = $request->file('avatar_storage')->store('professionals', 'public');
+            $input['avatar_storage'] = $path;
+            $input['img_url'] = null;
+        } elseif ($request->filled('img_url')) {
+            $input['img_url'] = $request->img_url;
+            // Eliminar imagen almacenada si existe
+            if ($professional->avatar_storage) {
+                Storage::disk('public')->delete($professional->avatar_storage);
+                $input['avatar_storage'] = null;
+            }
         }
 
         // Sync areas with expertise levels

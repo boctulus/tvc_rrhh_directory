@@ -10,3 +10,10 @@ pass: TVC#adm_2025!
 user: agent@tvc.com
 role: agent
 pass: TVC_#Agent_2025!
+
+
+Notas:
+
+- Ejecutar
+
+php artisan storage:link
