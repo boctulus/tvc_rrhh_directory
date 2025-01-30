@@ -27,7 +27,7 @@
 <!-- Contact Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('contact', 'Contact:') !!}
-    {!! Form::text('contact', null, ['class' => 'form-control', 'required', 'maxlength' => 255, 'maxlength' => 255]) !!}
+    {!! Form::text('contact', null, ['class' => 'form-control', 'maxlength' => 255]) !!}
 </div>
 
 <!-- Email Field -->

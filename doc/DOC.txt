@@ -1,6 +1,12 @@
 DOC DIRECTORIO TVC
 ==================
 
+Manual
+
+# Tecnologias 
+
+Laravel 10, Vite, TailwindCSS, InfyOm + AdminLTE
+
 # Usuarios predeterminados
 
 user: admin@tvc.com
@@ -11,6 +17,52 @@ user: agent@tvc.com
 role: agent
 pass: TVC_#Agent_2025!
 
+Estos usuarios son creados en el seeder 'UserSeeder.php'
+
+## Generacion de modelos
+
+    https://github.com/reliese/laravel
+
+## InfyOm
+
+Generadores corridos:
+
+para las vistas del Dashboard:
+
+    php artisan infyom:scaffold Area --fromTable --table=areas
+    php artisan infyom:scaffold Brand --fromTable --table=brands
+    php artisan infyom:scaffold Certification --fromTable --table=certifications
+    php artisan infyom:scaffold LinesFamily --fromTable --table=lines_families
+    php artisan infyom:scaffold Position --fromTable --table=positions
+    php artisan infyom:scaffold Professional --fromTable --table=professionals
+    php artisan infyom:scaffold ProfessionalArea --fromTable --table=professional_area
+    php artisan infyom:scaffold ProfessionalBrand --fromTable --table=professional_brand
+    php artisan infyom:scaffold ProfessionalCertification --fromTable --table=professional_certification
+    php artisan infyom:scaffold ProfessionalLineFamily --fromTable --table=professional_line_family
+    php artisan infyom:scaffold ProfessionalSkill --fromTable --table=professional_skill
+    php artisan infyom:scaffold State --fromTable --table=states
+
+para los endpoints de la API
+
+    php artisan infyom:api Area --fromTable --table=areas
+    php artisan infyom:api Brand --fromTable --table=brands
+    php artisan infyom:api Certification --fromTable --table=certifications
+    php artisan infyom:api LinesFamily --fromTable --table=lines_families
+    php artisan infyom:api Position --fromTable --table=positions
+    php artisan infyom:api Professional --fromTable --table=professionals
+    php artisan infyom:api ProfessionalArea --fromTable --table=professional_area
+    php artisan infyom:api ProfessionalBrand --fromTable --table=professional_brand
+    php artisan infyom:api ProfessionalCertification --fromTable --table=professional_certification
+    php artisan infyom:api ProfessionalLineFamily --fromTable --table=professional_line_family
+    php artisan infyom:api ProfessionalSkill --fromTable --table=professional_skill
+    php artisan infyom:api State --fromTable --table=states
+
+# Vite
+
+Se usa Vite asi que luego de cualquier cambio en el Dashboard puede ser necesario hacer:
+
+    php artisan view:clear
+    npm run build
 
 # API
 
