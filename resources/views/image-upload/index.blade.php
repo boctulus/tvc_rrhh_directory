@@ -67,8 +67,6 @@
 
 
 <script>
-
-// Configurar toastr primero
 document.addEventListener("DOMContentLoaded", (event) => {
     // console.log('Script iniciando');
 
@@ -85,7 +83,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
         const file = this.files[0];
         if (file) {
             if (file.size > 5242880) {
-                toastr.error('La imagen excede el tamaño máximo permitido de 5MB');
+                // toastr.error('La imagen excede el tamaño máximo permitido de 5MB');
                 this.value = '';
                 return;
             }
@@ -111,7 +109,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
         const uploadBtn = this;
 
         if (!imageInput?.files[0]) {
-            toastr.warning('Por favor seleccione una imagen');
+            // toastr.warning('Por favor seleccione una imagen');
             return;
         }
 
@@ -146,13 +144,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
                     imagePreview.style.display = 'block';
                     noImageText.style.display = 'none';
                 }
-                toastr.success('Imagen subida exitosamente');
+                // toastr.success('Imagen subida exitosamente');
             } else {
                 throw new Error(data.message || 'Error en la subida');
             }
         } catch (error) {
             debug('Error:', error.message);
-            toastr.error(error.message);
+            // toastr.error(error.message);
         } finally {
             uploadBtn.disabled = false;
             uploadBtn.innerHTML = 'Upload';
@@ -183,7 +181,3 @@ document.addEventListener("DOMContentLoaded", (event) => {
 </script>
 @endsection
 
-
-@push('scripts')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-@endpush
