@@ -1,11 +1,11 @@
 <x-laravel-ui-adminlte::adminlte-layout>
-    <@if(app()->environment('production'))
+    @if(app()->environment('production'))
         <?php $manifest = json_decode(file_get_contents(public_path('build/manifest.json')), true); ?>
         <link rel="stylesheet" href="{{ asset('build/'.$manifest['resources/sass/app.scss']['file']) }}">
         <script type="module" src="{{ asset('build/'.$manifest['resources/js/app.js']['file']) }}"></script>
     @else
         @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-    @endif>
+    @endif
 
     <body class="hold-transition sidebar-mini layout-fixed">
         <div class="wrapper">
@@ -22,14 +22,14 @@
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item dropdown user-menu">
                         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-                            <img src="http://tvc.lan/images/logos/logotvc2020white-mini.png"
+                            <img src="{{ asset('images/logos/logotvc2020white-mini.png') }}"
                                 class="user-image img-circle elevation-2" alt="User Image">
                             <span class="d-none d-md-inline">{{ Auth::check() ? Auth::user()->name : 'Guest' }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                             <!-- User image -->
                             <li class="user-header bg-primary">
-                                <img src="http://tvc.lan/images/logos/logotvc2020white-mini.png"
+                                <img src="{{ asset('images/logos/logotvc2020white-mini.png') }}"
                                     class="img-circle elevation-2" alt="User Image">
                                 <p>
                                     {{ Auth::check() ? Auth::user()->name : 'Guest' }}

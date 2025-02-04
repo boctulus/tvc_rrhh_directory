@@ -3,9 +3,7 @@ DOC DIRECTORIO TVC
 
 Manual
 
-# Tecnologias 
-
-Laravel 10, Vite, TailwindCSS, InfyOm + AdminLTE
+Proyecto realizado en Laravel 10 -version LTS-
 
 # Usuarios predeterminados
 
@@ -18,6 +16,48 @@ role: agent
 pass: TVC_#Agent_2025!
 
 Estos usuarios son creados en el seeder 'UserSeeder.php'
+
+---// SECCION TECNICA
+
+# Tecnologias 
+
+Laravel 10, Vite, TailwindCSS, InfyOm + AdminLTE
+
+# Instalacion
+
+- Copiar todo el Proyecto
+
+    Deben incluirse la carpeta node_modules/ asi como vendors/
+
+- Copiar la carpeta public/ a la raiz del proyecto
+- Configurar la base de datos, usuario y password de la misma en archivo .env
+- Ejecutar migraciones y seeders:
+
+    php artisan migrate
+    php artisan db:seed
+
+Ya logueado como Admin es posible correr desde el navegador comandos:
+
+    GET /admin/tasks/copy-public
+    Copia la carpeta public/ a la raiz del proyecto.
+
+    GET /admin/tasks/db/migrate
+    Ejecuta las migraciones en la base de datos.
+
+    GET /admin/tasks/db/seed
+    Ejecuta los seeders de la base de datos.
+
+    GET /admin/tasks/db/rollback
+    Realiza un rollback de las migraciones.
+
+    GET /admin/tasks/db/reset
+    Ejecuta el reset de migraciones.
+
+    GET /admin/tasks/db/fresh
+    Ejecuta el comando migrate:fresh en la base de datos.
+
+    GET /admin/tasks/cache/clear
+    Limpia la configuración, vistas y caché de la aplicación.
 
 ## Generacion de modelos
 
@@ -63,6 +103,13 @@ Se usa Vite asi que luego de cualquier cambio en el Dashboard puede ser necesari
 
     php artisan view:clear
     npm run build
+
+Luego de hacer el "build" puede ser necesario hacer:
+
+    cp public/build/.vite/manifest.json  cp public/build/manifest.json
+
+y borrar el archivo "hot" en produccion
+
 
 # API
 

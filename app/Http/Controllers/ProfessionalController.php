@@ -8,7 +8,7 @@ use App\Http\Controllers\AppBaseController;
 use App\Repositories\ProfessionalRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Flash;
+use Laracasts\Flash\Flash;
 
 class ProfessionalController extends AppBaseController
 {

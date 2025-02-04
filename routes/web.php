@@ -1,21 +1,23 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\PersonalController;
-use App\Http\Controllers\ProfessionalController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\BrandController;
+use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\AreaController;
-use App\Http\Controllers\CertificationController;
-use App\Http\Controllers\LinesFamilyController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\BrandController;
+use App\Http\Controllers\StateController;
+use App\Http\Controllers\PersonalController;
 use App\Http\Controllers\PositionController;
+use App\Http\Controllers\ImageUploadController;
+use App\Http\Controllers\LinesFamilyController;
+use App\Http\Controllers\ProfessionalController;
+use App\Http\Controllers\CertificationController;
 use App\Http\Controllers\ProfessionalAreaController;
 use App\Http\Controllers\ProfessionalBrandController;
-use App\Http\Controllers\ProfessionalCertificationController;
-use App\Http\Controllers\ProfessionalLineFamilyController;
 use App\Http\Controllers\ProfessionalSkillController;
-use App\Http\Controllers\StateController;
+use App\Http\Controllers\ProfessionalLineFamilyController;
+use App\Http\Controllers\ProfessionalCertificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +29,11 @@ use App\Http\Controllers\StateController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+// routes/web.php
+Route::get('/test-upload', [ImageUploadController::class, 'index'])->name('image.index');
+Route::post('/upload', [ImageUploadController::class, 'store'])->name('image.store');
+
 
 Route::get('/personal/example', function () {
     return view('personal.example-v4');
@@ -40,7 +47,7 @@ Auth::routes();
 Route::middleware(['auth'])->group(function () {
     // Admin-only routes
     Route::middleware(['role:admin'])->group(function () {
-        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::get('/dashboard', [ProfessionalController::class, 'index'])->name('dashboard');
         Route::resource('professionals', ProfessionalController::class);    
         Route::resource('brands', BrandController::class);
         Route::resource('areas', AreaController::class);
@@ -61,7 +68,7 @@ Route::middleware(['auth'])->group(function () {
         ->name('personal.index');
 
     // Admin dashboard route
-    Route::get('/admin', [DashboardController::class, 'index'])
+    Route::get('/admin', [ProfessionalController::class, 'index'])
         ->middleware('role:admin')
         ->name('admin');
 });
@@ -85,7 +92,8 @@ Route::prefix('admin/tasks/db')
                 Artisan::call('db:seed', [], $output);
                 return nl2br($output->fetch());
             } catch (\Exception $e) {
-                return nl2br($output->fetch() . "\n" . $e->getMessage() . "\n" . $e->getTraceAsString());
+                $output = new \Symfony\Component\Console\Output\BufferedOutput;
+                return nl2br($e->getMessage() . "\n" . $e->getTraceAsString());
             }
         });
 
@@ -118,19 +126,40 @@ Route::prefix('admin/tasks/db')
     });
 
 Route::prefix('admin/tasks')
-    ->middleware(['auth', 'role:admin'])
-    ->group(function () {
-        Route::get('/cache/clear', function () {
-            try {
-                Artisan::call('config:clear');
-                Artisan::call('view:clear');
-                Artisan::call('cache:clear');
-                return "Caché limpiada exitosamente";
-            } catch (\Exception $e) {
-                return "Error al limpiar la caché: " . $e->getMessage();
+->middleware(['auth', 'role:admin'])
+->group(function () {
+    Route::get('/cache/clear', function () {
+        try {
+            Artisan::call('config:clear');
+            Artisan::call('view:clear');
+            Artisan::call('cache:clear');
+            return "Caché limpiada exitosamente";
+        } catch (\Exception $e) {
+            return "Error al limpiar la caché: " . $e->getMessage();
+        }
+    });    
+
+    Route::get('/copy-public', function () {
+        try {
+            $command = '';
+            
+            // Detecta el sistema operativo y asigna el comando adecuado
+            if (PHP_OS_FAMILY === 'Windows') {
+                $command = 'xcopy public\ .\ /E /I /H /Y 2>&1';
+            } else {
+                $command = 'cp -R public/ ./ 2>&1';
             }
-        });
+
+            // Ejecuta el comando del sistema
+            $output = shell_exec($command);
+
+            return $output ?: "La carpeta 'public/' fue copiada exitosamente a la raíz del proyecto.";
+        } catch (\Exception $e) {
+            return "Error al copiar la carpeta: " . $e->getMessage();
+        }
     });
+});
+
 
 Route::redirect('/dashboard', '/professionals');
 Route::redirect('/admin', '/professionals');
