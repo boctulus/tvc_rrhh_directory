@@ -18,6 +18,9 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
+    // Proteccion de ruta /personal
+    'personal_route_protected' => false,
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment

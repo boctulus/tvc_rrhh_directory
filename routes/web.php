@@ -36,8 +36,12 @@ Route::post('/upload', [ImageUploadController::class, 'store'])->name('image.sto
 
 
 Route::get('/personal/example', function () {
-    return view('personal.example-v4');
+    return 'Hi';
 });
+
+// Ruta personal desprotegida (fuera del grupo auth)
+Route::get('/personal', [PersonalController::class, 'index'])->name('personal.index');
+
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('/home', [HomeController::class, 'index'])->name('home');
@@ -63,9 +67,9 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // Personal route accessible by both admin and agent
-    Route::get('/personal', [PersonalController::class, 'index'])
-        ->middleware('role:admin,agent')
-        ->name('personal.index');
+    // Route::get('/personal', [PersonalController::class, 'index'])
+    //     ->middleware('role:admin,agent')
+    //     ->name('personal.index');
 
     // Admin dashboard route
     Route::get('/admin', [ProfessionalController::class, 'index'])

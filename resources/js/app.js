@@ -25,4 +25,4 @@ toastr.options = {
 };
 
 // Ejemplo de uso
-toastr.success('Toastr se configuró correctamente.');
+// toastr.success('Toastr se configuró correctamente.');

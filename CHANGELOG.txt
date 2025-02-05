@@ -37,3 +37,4 @@
 [2025-01-30 17:25:05]	1.0.25	Automatic update
 [2025-02-04 22:46:05]	1.0.26	Automatic update
 [2025-02-04 22:47:39]	1.0.27	Automatic update
+[2025-02-05 02:32:30]	1.0.28	Varios fixes
