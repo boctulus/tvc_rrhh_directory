@@ -17,6 +17,22 @@ class ImageUploadController extends Controller
         return view('image-upload.index');
     }
 
+    function debug($path){
+        // Verifica que el directorio existe
+        if (!is_dir($path)) {
+            Log::error("El directorio no existe: $path");
+            return response()->json(['error' => "El directorio no existe: $path"], 404);
+        }
+
+        // Obtener el contenido del directorio
+        $files = array_diff(scandir($path), ['.', '..']);
+
+        // Registrar el contenido en el log
+        Log::debug('Contenido del directorio:', ['path' => $path, 'files' => $files]);
+
+        return json_encode(['path' => $path, 'files' => $files]);
+    }
+
     public function store(Request $request)
     {
         try {
@@ -47,6 +63,8 @@ class ImageUploadController extends Controller
                     'message' => $validator->errors()->first()
                 ], 422);
             }
+
+            // $this->debug(storage_path('app/' . $this->uploadPath));
 
             // Verificar directorio
             $uploadPath = storage_path('app/' . $this->uploadPath);

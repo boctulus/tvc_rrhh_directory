@@ -18,6 +18,7 @@ use App\Http\Controllers\ProfessionalBrandController;
 use App\Http\Controllers\ProfessionalSkillController;
 use App\Http\Controllers\ProfessionalLineFamilyController;
 use App\Http\Controllers\ProfessionalCertificationController;
+use App\Http\Controllers\TestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,14 +31,11 @@ use App\Http\Controllers\ProfessionalCertificationController;
 |
 */
 
-// routes/web.php
 Route::get('/test-upload', [ImageUploadController::class, 'index'])->name('image.index');
 Route::post('/upload', [ImageUploadController::class, 'store'])->name('image.store');
 
-
-Route::get('/personal/example', function () {
-    return 'Hi';
-});
+// Pruebas
+Route::get('/test/get_image', [ TestController::class, 'get_image']);
 
 // Ruta personal desprotegida (fuera del grupo auth)
 Route::get('/personal', [PersonalController::class, 'index'])->name('personal.index');

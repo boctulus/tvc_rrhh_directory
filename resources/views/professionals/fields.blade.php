@@ -346,7 +346,7 @@ document.addEventListener("DOMContentLoaded", function() {
 @push('page_scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const imageUpload = document.getElementById('imageUpload');
+        const imageUpload = document.getElementById('image');
         const imageUrl = document.getElementById('imageUrl');
 
         function toggleFields(uploadEnabled) {
