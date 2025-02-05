@@ -37,7 +37,7 @@ Route::get('/test-upload', [ImageUploadController::class, 'index'])->name('image
 Route::post('/upload', [ImageUploadController::class, 'store'])->name('image.store');
 
 // Sirve imagenes en localstorage
-Route::get('/image/{filename?}', [ImageController::class, 'show'])->name('image.show');
+Route::get('/img-uploads/{filename?}', [ImageController::class, 'show_uploads'])->name('image.show_uploads');
 
 // Pruebas
 Route::get('/test/get_image', [ TestController::class, 'get_image']);

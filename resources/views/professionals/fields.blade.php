@@ -104,15 +104,15 @@
                         <div id="currentImageContainer">
                             <label>Imagen Actual:</label><br>
                             @if($professional->avatar_storage)
-                                <img src="{{ Storage::url($professional->avatar_storage) }}" 
-                                     alt="Current Image" 
-                                     class="img-fluid" 
-                                     style="max-height: 200px;">
+                                <img src="{{ url('/img-uploads/'.basename($professional->avatar_storage)) }}" 
+                                    alt="Current Image" 
+                                    class="img-fluid" 
+                                    style="max-height: 200px;">
                             @elseif($professional->img_url)
                                 <img src="{{ $professional->img_url }}" 
-                                     alt="Current Image" 
-                                     class="img-fluid" 
-                                     style="max-height: 200px;">
+                                    alt="Current Image" 
+                                    class="img-fluid" 
+                                    style="max-height: 200px;">
                             @endif
                         </div>
                     @endif
@@ -318,7 +318,7 @@ document.addEventListener("DOMContentLoaded", function() {
             const data = await response.json();
             
             if (data.success) {
-                imageUrlInput.value = data.url;
+                imageUrlInput.value = data.url;  // Usamos la URL que viene del servidor
                 finalImageUrl.value = data.url;
                 showPreview(data.url);
                 statusDiv.innerHTML = '<div class="alert alert-success">Imagen subida exitosamente</div>';

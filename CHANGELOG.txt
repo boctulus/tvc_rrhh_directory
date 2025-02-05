@@ -41,3 +41,4 @@
 [2025-02-05 02:44:08]	1.0.29	100% funcional
 [2025-02-05 13:54:58]	1.0.30	TestController::get_image() sirve assets de forma concistente en local con Windows y Produccion con Linux (Hostinger)
 [2025-02-05 14:07:39]	1.0.31	ImageController.show ofrece la forma segura de servir imagenes desde storage/public
+[2025-02-05 18:00:40]	1.0.32	DOC actualizada

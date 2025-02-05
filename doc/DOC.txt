@@ -4,6 +4,7 @@ DOC DIRECTORIO TVC
 Manual
 
 Proyecto realizado en Laravel 10 -version LTS-
+... Vite, TailwindCSS, InfyOm + AdminLTE
 
 # Usuarios predeterminados
 
@@ -15,13 +16,23 @@ user: agent@tvc.com
 role: agent
 pass: TVC_#Agent_2025!
 
-Estos usuarios son creados en el seeder 'UserSeeder.php'
-
 ---// SECCION TECNICA
 
-# Tecnologias 
+Lo usuarios son creados en el seeder 'UserSeeder.php'
 
-Laravel 10, Vite, TailwindCSS, InfyOm + AdminLTE
+Nota:
+
+Se ha permitido desproter la ruta /personal a la que accede el agente 
+desde el Middleware Authenticate seteando el false el valor del flag 'personal_route_protected'
+en el archivo el archivo 'config/app.php'
+
+/*
+    ./config/app.php
+*/
+
+# Proteccion de ruta /personal
+'personal_route_protected' => false,
+
 
 # Instalacion
 
@@ -35,6 +46,10 @@ Laravel 10, Vite, TailwindCSS, InfyOm + AdminLTE
 
     php artisan migrate
     php artisan db:seed
+
+- Crear enlaces simbolico a la carpeta storage:
+
+    php artisan storage:link
 
 Ya logueado como Admin es posible correr desde el navegador comandos:
 
@@ -110,6 +125,10 @@ Luego de hacer el "build" puede ser necesario hacer:
 
 y borrar el archivo "hot" en produccion
 
+y ... copiar el manifest.json a su ubicacion correcta porque Vite lo genera en la ubicacion errornea:
+
+cp public\build\.vite\manifest.json public\build\manifest.json
+
 
 # API
 
@@ -120,8 +139,3 @@ api/areas
 etc.
 
 
-Notas:
-
-- Ejecutar
-
-php artisan storage:link

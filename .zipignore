@@ -12,3 +12,4 @@ __releases/
 test-*.php
 test_*.php
 node_modules/
+node_modules.zip

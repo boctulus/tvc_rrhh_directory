@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class ImageUploadController extends Controller
 {
@@ -89,7 +90,7 @@ class ImageUploadController extends Controller
 
             return response()->json([
                 'success' => true,
-                'url' => asset($publicUrl),
+                'url' => URL::to("/img-uploads/{$filename}"),
                 'message' => 'Imagen subida exitosamente'
             ]);
 

@@ -13,21 +13,21 @@ use Symfony\Component\HttpFoundation\Response;
 
     Requiere configurar rutas en web.php
 
-    Route::get('/image/{filename?}', [ImageController::class, 'show'])->name('image.show');
+    Route::get('/img-uploads/{filename?}', [ImageController::class, 'show_uploads'])->name('image.show_uploads');
 
     Uso:
 
     # Sirve la ultima imagen subida a uploads
 
-        /image
+        /img-uploads
 
     # Sirve un imagen en particular
 
-        /image/{archivo}
+        /img-uploads/{archivo}
 
     Ej:
 
-        /image/1738760703_67a361ffa14b0.jpeg
+        /img-uploads/1738761044_67a3635404d85.jpeg
 */
 
 class ImageController extends Controller
@@ -38,7 +38,7 @@ class ImageController extends Controller
      * @param string|null $filename
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse|\Illuminate\Http\Response
      */
-    public function show($filename = null)
+    public function show_uploads($filename = null)
     {
         $basePath = 'uploads';
         $path = "public/{$basePath}";
