@@ -31,6 +31,8 @@ class CreateProfessionalRequest extends FormRequest
         if ($this->hasFile('img_file')) {
             $rules['img_file'] = [
                 'file',
+                'final_image_url' => 'nullable|url',
+                'img_url' => 'nullable|url|required_without:final_image_url',
                 'image',
                 'mimes:jpeg,png,jpg,gif',
                 'max:2048'

@@ -56,54 +56,75 @@
         </div>
         <div class="card-body">
             <div class="row">
-                <!-- File Upload Field -->
+                <!-- Ajax Upload Section -->
                 <div class="form-group col-sm-6">
-                    {!! Form::label('avatar_storage', 'Upload Image:') !!}
-                    {!! Form::file('avatar_storage', [
-                        'class' => 'form-control-file',
-                        'accept' => 'image/*',
-                        'id' => 'imageUpload'
-                    ]) !!}
+                    <label>Subir imagen:</label>
+                    <div class="input-group">
+                        <input type="file" 
+                               class="form-control" 
+                               id="ajaxImageUpload" 
+                               accept="image/*">
+                        <button type="button" 
+                                class="btn btn-primary" 
+                                id="uploadBtn">
+                            <i class="fas fa-upload"></i> Subir
+                        </button>
+                    </div>
+                    <small class="text-muted">Formatos permitidos: JPEG, PNG, GIF, WEBP. Máx 5MB</small>
+                    <div id="uploadStatus" class="mt-2"></div>
                 </div>
 
                 <!-- Image URL Field -->
                 <div class="form-group col-sm-6">
-                    {!! Form::label('img_url', 'Or Enter Image URL:') !!}
+                    {!! Form::label('img_url', 'O usar URL de imagen:') !!}
                     {!! Form::text('img_url', null, [
                         'class' => 'form-control',
                         'id' => 'imageUrl',
                         'placeholder' => 'https://example.com/image.jpg'
                     ]) !!}
+                    @error('img_url')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+
+            <!-- Preview Sections -->
+            <div class="row mt-3">
+                <div class="col-sm-12">
+                    <div id="ajaxPreviewContainer" style="display:none;">
+                        <label>Previsualización:</label><br>
+                        <img id="ajaxImagePreview" 
+                             src="#" 
+                             alt="Preview" 
+                             class="img-fluid" 
+                             style="max-height: 200px;">
+                    </div>
+                    
+                    @if(isset($professional))
+                        <div id="currentImageContainer">
+                            <label>Imagen Actual:</label><br>
+                            @if($professional->avatar_storage)
+                                <img src="{{ Storage::url($professional->avatar_storage) }}" 
+                                     alt="Current Image" 
+                                     class="img-fluid" 
+                                     style="max-height: 200px;">
+                            @elseif($professional->img_url)
+                                <img src="{{ $professional->img_url }}" 
+                                     alt="Current Image" 
+                                     class="img-fluid" 
+                                     style="max-height: 200px;">
+                            @endif
+                        </div>
+                    @endif
                 </div>
             </div>
             
-            <!-- Preview Current Image -->
-            @if(isset($professional))
-                @if($professional->avatar_storage)
-                    <div class="row mt-3">
-                        <div class="col-sm-12">
-                            <label>Current Image:</label><br>
-                            <img src="{{ Storage::url($professional->avatar_storage) }}" 
-                                 alt="Professional Image" 
-                                 class="img-fluid" 
-                                 style="max-height: 200px;">
-                        </div>
-                    </div>
-                @elseif($professional->img_url)
-                    <div class="row mt-3">
-                        <div class="col-sm-12">
-                            <label>Current Image:</label><br>
-                            <img src="{{ $professional->img_url }}" 
-                                 alt="Professional Image" 
-                                 class="img-fluid" 
-                                 style="max-height: 200px;">
-                        </div>
-                    </div>
-                @endif
-            @endif
+            <!-- Hidden field for final URL -->
+            <input type="hidden" name="final_image_url" id="finalImageUrl">
         </div>
     </div>
 </div>
+
 
 <!-- Expertise Field -->
 <div class="form-group col-sm-6">
@@ -231,6 +252,94 @@
             addLineFamilyRow();
         }
     });
+</script>
+@endpush
+
+
+@push('page_scripts')
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const ajaxUpload = document.getElementById('ajaxImageUpload');
+    const uploadBtn = document.getElementById('uploadBtn');
+    const statusDiv = document.getElementById('uploadStatus');
+    const previewImg = document.getElementById('ajaxImagePreview');
+    const previewContainer = document.getElementById('ajaxPreviewContainer');
+    const imageUrlInput = document.getElementById('imageUrl');
+    const finalImageUrl = document.getElementById('finalImageUrl');
+
+    function showPreview(url) {
+        previewImg.src = url;
+        previewContainer.style.display = 'block';
+        if(document.getElementById('currentImageContainer')) {
+            document.getElementById('currentImageContainer').style.display = 'none';
+        }
+    }
+
+    ajaxUpload.addEventListener('change', function(e) {
+        const file = this.files[0];
+        if (file) {
+            // Preview local
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                showPreview(e.target.result);
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+
+    uploadBtn.addEventListener('click', async function() {
+        const file = ajaxUpload.files[0];
+        if (!file) {
+            statusDiv.innerHTML = '<div class="alert alert-warning">Selecciona una imagen primero</div>';
+            return;
+        }
+
+        if (file.size > 5242880) {
+            statusDiv.innerHTML = '<div class="alert alert-danger">El archivo excede 5MB</div>';
+            return;
+        }
+
+        uploadBtn.disabled = true;
+        statusDiv.innerHTML = '<div class="text-info">Subiendo...</div>';
+
+        try {
+            const formData = new FormData();
+            formData.append('image', file);
+            formData.append('_token', '{{ csrf_token() }}');
+
+            const response = await fetch('{{ route("image.store") }}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            });
+
+            const data = await response.json();
+            
+            if (data.success) {
+                imageUrlInput.value = data.url;
+                finalImageUrl.value = data.url;
+                showPreview(data.url);
+                statusDiv.innerHTML = '<div class="alert alert-success">Imagen subida exitosamente</div>';
+            } else {
+                throw new Error(data.message);
+            }
+        } catch (error) {
+            statusDiv.innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
+        } finally {
+            uploadBtn.disabled = false;
+        }
+    });
+
+    imageUrlInput.addEventListener('input', function() {
+        if (this.value) {
+            previewContainer.style.display = 'block';
+            previewImg.src = this.value;
+            finalImageUrl.value = this.value;
+        }
+    });
+});
 </script>
 @endpush
 

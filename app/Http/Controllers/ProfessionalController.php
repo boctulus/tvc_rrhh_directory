@@ -78,6 +78,12 @@ class ProfessionalController extends AppBaseController
     {
         $input = $request->all();
 
+        // Manejar imagen final
+        if ($request->filled('final_image_url')) {
+            $input['img_url'] = $request->final_image_url;
+            $input['avatar_storage'] = null;
+        }
+
         // Manejar subida de imagen
         if ($request->hasFile('avatar_storage')) { // Cambiar de 'image' a 'avatar_storage'
             $path = $request->file('avatar_storage')->store('professionals', 'public');
@@ -144,6 +150,17 @@ class ProfessionalController extends AppBaseController
         /* 
             Handle image file upload 
         */
+
+        // Manejar imagen final
+        if ($request->filled('final_image_url')) {
+            // Eliminar imagen anterior si existe
+            if ($professional->avatar_storage) {
+                Storage::disk('public')->delete($professional->avatar_storage);
+            }
+            
+            $input['img_url'] = $request->final_image_url;
+            $input['avatar_storage'] = null;
+        }
 
         // Manejar subida de imagen
         if ($request->hasFile('avatar_storage')) { // Cambiar de 'image' a 'avatar_storage'
