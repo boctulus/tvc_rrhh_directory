@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 class TestController extends Controller
 {
-    function get_image($filname = null)
+    function get_image($filename = null)
     {        
         $is_local = (env('APP_ENV') == 'local');
 
@@ -27,7 +27,7 @@ class TestController extends Controller
             dd("El directorio no existe: $path");           
         }
         
-        if ($filname == null){
+        if ($filename == null){
             $files = array_diff(scandir($path), ['.', '..']);
             
             if (count($files) >0){

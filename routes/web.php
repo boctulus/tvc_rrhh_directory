@@ -1,24 +1,26 @@
 <?php
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\AreaController;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\BrandController;
-use App\Http\Controllers\StateController;
-use App\Http\Controllers\PersonalController;
-use App\Http\Controllers\PositionController;
+use App\Http\Controllers\CertificationController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ImageController;
 use App\Http\Controllers\ImageUploadController;
 use App\Http\Controllers\LinesFamilyController;
-use App\Http\Controllers\ProfessionalController;
-use App\Http\Controllers\CertificationController;
+use App\Http\Controllers\PersonalController;
+use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ProfessionalAreaController;
 use App\Http\Controllers\ProfessionalBrandController;
-use App\Http\Controllers\ProfessionalSkillController;
-use App\Http\Controllers\ProfessionalLineFamilyController;
 use App\Http\Controllers\ProfessionalCertificationController;
+use App\Http\Controllers\ProfessionalController;
+use App\Http\Controllers\ProfessionalLineFamilyController;
+use App\Http\Controllers\ProfessionalSkillController;
+use App\Http\Controllers\StateController;
 use App\Http\Controllers\TestController;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +35,9 @@ use App\Http\Controllers\TestController;
 
 Route::get('/test-upload', [ImageUploadController::class, 'index'])->name('image.index');
 Route::post('/upload', [ImageUploadController::class, 'store'])->name('image.store');
+
+// Sirve imagenes en localstorage
+Route::get('/image/{filename?}', [ImageController::class, 'show'])->name('image.show');
 
 // Pruebas
 Route::get('/test/get_image', [ TestController::class, 'get_image']);
