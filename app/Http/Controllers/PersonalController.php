@@ -41,26 +41,21 @@ class PersonalController extends Controller
 
             $lineFamily_names = $lineFamilies->pluck('name')->toArray();
 
-            // En App\Http\Controllers\PersonalController.php
-$brands = array_values(array_unique( // Agregar array_values aquí
-    array_map(function($name) {
-        if (strpos($name, '_') === false) {
-            return $name;
-        }
-        return substr($name, 0, strpos($name, '_'));
-    }, $lineFamily_names)
-));
-            
+            $brands = array_values(array_unique( 
+                array_map(function($name) {
+                    if (strpos($name, '_') === false) {
+                        return $name;
+                    }
+                    return substr($name, 0, strpos($name, '_'));
+                }, $lineFamily_names)
+            ));
 
             return [
                 'id' => $prof->id,
                 'name' => $prof->name,
                 'position' => $prof->position->name,
                 'brands' => $brands,
-                'certifications' => $prof->professionalCertifications
-                ->map(function($pc) { return $pc->certification->name; })
-                ->unique() // Add unique() to remove duplicates
-                ->implode(', '),
+                'certifications' => $prof->professionalCertifications,
                 'lines_families' => $lineFamilies, 
                 'expertise' => $prof->expertise,
                 'location' => $prof->location->name ?? 'N/A',

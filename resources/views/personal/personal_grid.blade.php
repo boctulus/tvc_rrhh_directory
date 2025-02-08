@@ -173,7 +173,15 @@
                     fieldValue = String(personalData.location || '').toLowerCase();
                     break;
                 case 'certifications':
-                    fieldValue = String(personalData.certifications || '').toLowerCase();
+                    // console.log(personalData.certifications);
+                    
+                    fieldValue = Array.isArray(personalData.certifications) 
+                        ? personalData.certifications.map((val) => {
+                            return val.certification.name;
+                        }).join(' ').toLowerCase()
+                        : String(personalData.certifications || '').toLowerCase();
+                    
+                    // console.log(fieldValue);
                     break;
                 case 'expertise':
                     fieldValue = String(personalData.expertise || '').toLowerCase();
@@ -214,6 +222,7 @@
 
         const linesFamilies = personalData.lines_families;
 
+    
         // Crear el componente con los datos formateados
         const profileCard = `
             <profile-card
@@ -228,7 +237,7 @@
                 country="México"
                 province="${personalData.location}"
                 brands='${JSON.stringify(brands)}'
-                certifications='${JSON.stringify(parseCertifications(personalData.certifications))}'
+                certifications='${JSON.stringify(personalData.certifications)}'
                 skills='${JSON.stringify({ lines_families: linesFamilies })}'>
             </profile-card>
         `;
@@ -241,9 +250,6 @@
         document.getElementById('modalContainer').classList.add('hidden');
     }
 
-    function parseCertifications(certString) {
-        // Dividir el string de certificaciones por espacios y crear array
-        return certString.split(' ').filter(cert => cert.length > 0);
-    }
+    
 </script>
 @endsection

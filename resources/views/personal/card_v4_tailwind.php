@@ -166,10 +166,11 @@
             if (!extendedInfo) return;
 
             const brands = this.safeJSONParse(this.getAttribute('brands'), []);
-            const certifications = this.safeJSONParse(this.getAttribute('certifications'), {});
+            const certifications = this.safeJSONParse(this.getAttribute('certifications'), {}).map((val) => {
+                return val.certification.name;
+            });
             const skills = this.safeJSONParse(this.getAttribute('skills'), {});
 
-            // console.log(certifications);    
 
             extendedInfo.innerHTML = `
                    <div class="p-4">
@@ -198,7 +199,7 @@
                `;
         }
 
-        createSection(title, items) {            
+        createSection(title, items) {              
             const listItems = Array.isArray(items)
                 ? items.map(item => `<li>${item}</li>`).join('')
                 : Object.entries(items).map(([key, value]) => `<li>${key}: ${value}</li>`).join('');
