@@ -43,3 +43,4 @@
 [2025-02-05 14:07:39]	1.0.31	ImageController.show ofrece la forma segura de servir imagenes desde storage/public
 [2025-02-05 18:00:40]	1.0.32	DOC actualizada
 [2025-02-08 10:26:38]	1.0.33	Corregido como se muestran las certificaciones
+[2025-02-08 10:43:49]	1.0.34	Corregido como se muestran las marcas

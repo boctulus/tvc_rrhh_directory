@@ -41,14 +41,15 @@ class PersonalController extends Controller
 
             $lineFamily_names = $lineFamilies->pluck('name')->toArray();
 
-            $brands = array_unique(
-                array_map(function($name) {
-                    if (strpos($name, '_') === false) {
-                        return $name;
-                    }
-                    return substr($name, 0, strpos($name, '_'));
-                }, $lineFamily_names)
-            );
+            // En App\Http\Controllers\PersonalController.php
+$brands = array_values(array_unique( // Agregar array_values aquí
+    array_map(function($name) {
+        if (strpos($name, '_') === false) {
+            return $name;
+        }
+        return substr($name, 0, strpos($name, '_'));
+    }, $lineFamily_names)
+));
             
 
             return [

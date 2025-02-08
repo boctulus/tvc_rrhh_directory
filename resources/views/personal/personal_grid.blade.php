@@ -149,7 +149,7 @@
     clearButton.style.display = searchTerm ? 'block' : 'none';
 
     cards.forEach(card => {
-        const instructorData = JSON.parse(card.dataset.instructor || '{}');
+        const personalData = JSON.parse(card.dataset.instructor || '{}');
         let matches = false;
 
         // Buscar en todos los campos seleccionados
@@ -159,30 +159,30 @@
             switch (field) {
                 case 'brands':
                     // Convertir el array de brands a string para búsqueda
-                    fieldValue = Array.isArray(instructorData.brands) 
-                        ? instructorData.brands.join(' ').toLowerCase()
-                        : String(instructorData.brands || '').toLowerCase();
+                    fieldValue = Array.isArray(personalData.brands) 
+                        ? personalData.brands.join(' ').toLowerCase()
+                        : String(personalData.brands || '').toLowerCase();
                     break;
                 case 'name':
-                    fieldValue = String(instructorData.name || '').toLowerCase();
+                    fieldValue = String(personalData.name || '').toLowerCase();
                     break;
                 case 'position':
-                    fieldValue = String(instructorData.position || '').toLowerCase();
+                    fieldValue = String(personalData.position || '').toLowerCase();
                     break;
                 case 'location':
-                    fieldValue = String(instructorData.location || '').toLowerCase();
+                    fieldValue = String(personalData.location || '').toLowerCase();
                     break;
                 case 'certifications':
-                    fieldValue = String(instructorData.certifications || '').toLowerCase();
+                    fieldValue = String(personalData.certifications || '').toLowerCase();
                     break;
                 case 'expertise':
-                    fieldValue = String(instructorData.expertise || '').toLowerCase();
+                    fieldValue = String(personalData.expertise || '').toLowerCase();
                     break;
                 case 'contact':
-                    fieldValue = String(instructorData.email || '').toLowerCase(); // Cambiado de contact a email
+                    fieldValue = String(personalData.email || '').toLowerCase(); // Cambiado de contact a email
                     break;
                 case 'phone':
-                    fieldValue = String(instructorData.phone || '').toLowerCase();
+                    fieldValue = String(personalData.phone || '').toLowerCase();
                     break;
             }
 
@@ -201,34 +201,34 @@
         handleSearch();
     }
 
-    function showModal(instructorData) {
-        console.log(instructorData); //
+    function showModal(personalData) {
+        // console.log(personalData); //
         
         // Convertir las marcas a array si es string
-        const brands = typeof instructorData.brands === 'string'
-            ? instructorData.brands.split(',')
-            : instructorData.brands;
+        const brands = typeof personalData.brands === 'string'
+            ? personalData.brands.split(',')
+            : personalData.brands;
 
         // Ensure lines_families are correctly displayed
-        const lineNames = instructorData.lines_families.map(lf => lf.name);
+        const lineNames = personalData.lines_families.map(lf => lf.name);
 
-        const linesFamilies = instructorData.lines_families;
+        const linesFamilies = personalData.lines_families;
 
         // Crear el componente con los datos formateados
         const profileCard = `
             <profile-card
-                image-url="${instructorData.img_url || avatar_default}"
-                short-name="${instructorData.name.split(' ').slice(0, 2).join(' ')}"
-                full-name="${instructorData.name}"
-                phone="${instructorData.phone}"
-                specialty="${instructorData.position}"
-                position="${instructorData.position}"
-                rating="${instructorData.expertise}.0"
-                email="${instructorData.email}"
+                image-url="${personalData.img_url || avatar_default}"
+                short-name="${personalData.name.split(' ').slice(0, 2).join(' ')}"
+                full-name="${personalData.name}"
+                phone="${personalData.phone}"
+                specialty="${personalData.position}"
+                position="${personalData.position}"
+                rating="${personalData.expertise}.0"
+                email="${personalData.email}"
                 country="México"
-                province="${instructorData.location}"
+                province="${personalData.location}"
                 brands='${JSON.stringify(brands)}'
-                certifications='${JSON.stringify(parseCertifications(instructorData.certifications))}'
+                certifications='${JSON.stringify(parseCertifications(personalData.certifications))}'
                 skills='${JSON.stringify({ lines_families: linesFamilies })}'>
             </profile-card>
         `;

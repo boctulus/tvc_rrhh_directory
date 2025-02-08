@@ -169,14 +169,7 @@
             const certifications = this.safeJSONParse(this.getAttribute('certifications'), {});
             const skills = this.safeJSONParse(this.getAttribute('skills'), {});
 
-            /*
-                {
-                    "DHCA-VIS": "DHCA-VIS",
-                    "DHSA": "DHSA",
-                    "DHCA-ACS": "DHCA-ACS"
-                }
-            */
-            console.log(certifications);    
+            // console.log(certifications);    
 
             extendedInfo.innerHTML = `
                    <div class="p-4">
@@ -205,25 +198,17 @@
                `;
         }
 
-        createSection(title, items) {
-            if (title === 'Certificaciones') {
-                // Asegurarnos de que items sea un array
-                const certifications = Array.isArray(items) ? items : Object.keys(items);
-                
-                // Crear un <li> para cada certificación
-                const listItems = certifications.map(cert => 
-                    `<li class="mb-1">${cert}</li>`
-                ).join('');
-                
-                return `
-                    <div>
-                        <p class="mb-2"><strong>${title}:</strong></p>
-                        <ul class="space-y-1">
-                            ${listItems}
-                        </ul>
-                    </div>
-                `;
-            }    
+        createSection(title, items) {            
+            const listItems = Array.isArray(items)
+                ? items.map(item => `<li>${item}</li>`).join('')
+                : Object.entries(items).map(([key, value]) => `<li>${key}: ${value}</li>`).join('');
+
+            return `
+                   <div>
+                       <p class="mb-2"><strong>${title}:</strong></p>
+                       <ul>${listItems}</ul>
+                   </div>
+               `;
         }
 
         createSkillsSection(skills) {            
@@ -232,7 +217,7 @@
         
             
             const skillItems = lineFamilies.map(skill => {
-                console.log(skill);
+                // console.log(skill);
 
                 const stars = '★'.repeat(skill.expertise_level);
                 return `
