@@ -242,15 +242,8 @@
     }
 
     function parseCertifications(certString) {
-        // Función helper para convertir el string de certificaciones a objeto
-        const certObj = {};
-        const certs = certString.split(' ');
-        certs.forEach(cert => {
-            // Ajustar la lógica según el formato exacto de certificaciones
-            const [brand, value] = cert.split(':');
-            certObj[brand] = value || cert;
-        });
-        return certObj;
+        // Dividir el string de certificaciones por espacios y crear array
+        return certString.split(' ').filter(cert => cert.length > 0);
     }
 </script>
 @endsection

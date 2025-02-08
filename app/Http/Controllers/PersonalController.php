@@ -57,8 +57,9 @@ class PersonalController extends Controller
                 'position' => $prof->position->name,
                 'brands' => $brands,
                 'certifications' => $prof->professionalCertifications
-                    ->map(function($pc) { return $pc->certification->name; })
-                    ->implode(', '),
+                ->map(function($pc) { return $pc->certification->name; })
+                ->unique() // Add unique() to remove duplicates
+                ->implode(', '),
                 'lines_families' => $lineFamilies, 
                 'expertise' => $prof->expertise,
                 'location' => $prof->location->name ?? 'N/A',
